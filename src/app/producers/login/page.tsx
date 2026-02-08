@@ -64,7 +64,7 @@ export default function LoginPage() {
         localStorage.setItem("user", JSON.stringify(response.data.data.user));
 
         setTimeout(() => {
-          router.push("/dashboard");
+          router.push("/producers/dashboard");
         }, 1500);
       } else {
         toast.error(
@@ -82,7 +82,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row bg-background-light dark:bg-background-dark">
+    <div className="relative min-h-screen lg:h-screen flex flex-col lg:flex-row bg-background-light dark:bg-background-dark">
       {/* Back to Home Button */}
       <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
         <motion.div
@@ -131,34 +131,25 @@ export default function LoginPage() {
           </div>
 
           {/* Centered Content */}
-          <div className="max-w-md space-y-6 text-center px-4">
-            <blockquote className="text-xl md:text-2xl font-display font-medium leading-relaxed">
-              &quot;Investing in agriculture is not just about profit; it&apos;s
-              about sustaining the future. Agrofund Hub makes it seamless.&quot;
-            </blockquote>
+          <div className="max-w-md h-full flex flex-col justify-end pb-14space-y-6 text-center px-4">
+            <h2 className="text-xl md:text-2xl font-display font-bold leading-relaxed">
+              Empowering Producers Across{" "}
+              <span className="text-primary">Nigeria</span>
+            </h2>
 
             {/* Testimonial */}
             <div className="flex flex-col items-center gap-3">
-              <div className="relative size-10 rounded-full bg-white/20 overflow-hidden backdrop-blur-sm">
-                <CldImage
-                  src="jcpvvrcgijhgqyilk4ry"
-                  alt="Portrait of Marcus Chen"
-                  className="object-cover"
-                  width={40}
-                  height={40}
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-bold text-sm">Kingsley Agbam</p>
-                <p className="text-xs text-white/70">CEO Agrofund Hub</p>
-              </div>
+              <p>
+                Agrofund is on a mission to transform thousands of producers by
+                granting them access to capital and connections on a global
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Right Form Section */}
-      <div className="flex-1 flex flex-col justify-center min-h-screen p-4 md:p-6 lg:p-8">
+      <div className="flex-1 flex flex-col justify-center min-h-screen lg:min-h-0 lg:h-full p-4 md:p-6 lg:p-8">
         <div className="w-full max-w-105 mx-auto">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-6 flex items-center justify-center gap-3">
@@ -184,14 +175,15 @@ export default function LoginPage() {
                 Welcome Back
               </h1>
               <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
-                Invest in the future of farming today.
+                Access your producer dashboard to manage your crops, inventory,
+                and funds.
               </p>
             </div>
 
             {/* Google Login Button */}
             <button
               type="button"
-              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors shadow-sm mb-6"
+              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors shadow-sm mb-6"
             >
               <FcGoogle className="w-5 h-5" />
               <span>Continue with Google</span>
@@ -223,7 +215,7 @@ export default function LoginPage() {
                   placeholder="name@company.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                  className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2 px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                   required
                 />
               </div>
@@ -244,7 +236,7 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-3 px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                    className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2 px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                     required
                   />
                   <button
@@ -272,7 +264,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={!isFormValid || isLoading}
-                className={`mt-2 flex w-full items-center justify-center rounded-xl h-12 px-4 text-base font-semibold transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                className={`mt-2 flex w-full items-center justify-center rounded-xl h-10 px-4 text-base font-semibold transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isFormValid && !isLoading
                     ? "bg-primary hover:bg-primary-dark text-white cursor-pointer focus:ring-primary"
                     : "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
@@ -294,7 +286,7 @@ export default function LoginPage() {
               <p className="text-text-main-light dark:text-text-main-dark text-sm">
                 Don&apos;t have an account?{" "}
                 <Link
-                  href="/signup"
+                  href="/producers/signup"
                   className="text-primary font-semibold hover:text-primary-dark transition-colors"
                 >
                   Sign up
