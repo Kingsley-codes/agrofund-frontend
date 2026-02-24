@@ -6,13 +6,13 @@ const steps: Step[] = [
     icon: <FaSearch />,
     title: "1. Choose What You Want to Farm",
     description:
-      "Select from available crops or livestock. Decide how many units you want to cultivate and how long you want the farming cycle to run.",
+      "Select from available crops or livestock. Decide how many units you want to cultivate.",
   },
   {
     icon: <FaRegUser />,
-    title: "2. We Assign Trusted Producers",
+    title: "2. We Assign Trusted Farmers",
     description:
-      "We connect you with vetted local producers who handle the physical farming on your behalf, from planting to rearing and care.",
+      "We engage experienced farmers to cultivate your chosen crops or livestock. They handle all the work while you track progress through our platform.",
   },
   {
     icon: <FaWallet />,
@@ -28,7 +28,7 @@ export default function HowItWorks() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 mb-12 text-center md:text-left">
           <h2 className="text-2xl font-bold text-gray-800 text-center md:text-4xl">
-            Farm From Anywhere, Without Owning Land
+            Invest in African Agriculture From Anywhere
           </h2>
           <p className="text-sm md:text-base text-gray-700 mx-auto text-center max-w-2xl">
             You choose what to farm. We connect you with real producers who do
@@ -41,9 +41,9 @@ export default function HowItWorks() {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="group flex flex-col gap-4 rounded-2xl border border-[#d5e7cf] dark:border-white/10 bg-surface-light dark:bg-surface-dark p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-primary/50"
+              className="group flex flex-col gap-4 rounded-2xl border border-[#d5e7cf] bg-gray-100 p-6 transition-all hover:-translate-y-1 hover:shadow-lg hover:border-primary/50"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/20 text-gray-700 dark:text-white group-hover:bg-primary transition-colors">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/40 text-gray-200 hover:text-white hover:border-0 group-hover:bg-primary transition-colors">
                 <span className="text-2xl">{step.icon}</span>
               </div>
               <div className="flex flex-col gap-2">

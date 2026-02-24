@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { ArrowLeft } from "lucide-react";
 import { FaArrowRight, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -91,7 +92,7 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 md:text-white hover:text-primary transition-colors font-medium text-sm"
+            className="inline-flex items-center text-gray-600 md:text-white hover:text-lime-400 transition-colors font-medium text-sm"
           >
             <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-2" />
             Back to Home
@@ -100,8 +101,8 @@ export default function LoginPage() {
       </div>
 
       {/* Left Visual Section (Desktop) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-background-dark overflow-hidden">
-        <div className="absolute inset-0">
+      <div className="hidden lg:flex bg-slate-900 lg:w-1/2 relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <CldImage
             src="zv6wbqyvd3hbxj5a9vnn"
             alt="Sustainable agriculture field"
@@ -116,43 +117,20 @@ export default function LoginPage() {
         <div className="relative z-10 flex flex-col justify-center items-center w-full text-white p-8">
           {/* Logo - Moved to top */}
           <div className="absolute top-19 left-12 flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-transparent backdrop-blur-sm">
-              <CldImage
-                src="y3byxgonrtyk5ti1290h"
-                alt="Agrofund Hub logo"
-                width={30}
-                height={30}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <h2 className="text-white text-xl font-semibold tracking-tight">
-              Agrofund Hub
-            </h2>
+            <Image
+              src="/grow-logo_White_Transparent.svg"
+              alt="Grow logo"
+              width={178}
+              height={178}
+            />
           </div>
 
           {/* Centered Content */}
           <div className="max-w-md space-y-6 text-center px-4">
             <blockquote className="text-xl md:text-2xl font-display font-medium leading-relaxed">
               &quot;Investing in agriculture is not just about profit; it&apos;s
-              about sustaining the future. Agrofund Hub makes it seamless.&quot;
+              about sustaining the future. Grow Africa makes it seamless.&quot;
             </blockquote>
-
-            {/* Testimonial */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="relative size-10 rounded-full bg-white/20 overflow-hidden backdrop-blur-sm">
-                <CldImage
-                  src="jcpvvrcgijhgqyilk4ry"
-                  alt="Portrait of Marcus Chen"
-                  className="object-cover"
-                  width={40}
-                  height={40}
-                />
-              </div>
-              <div className="text-center">
-                <p className="font-bold text-sm">Kingsley Agbam</p>
-                <p className="text-xs text-white/70">CEO Agrofund Hub</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -162,28 +140,22 @@ export default function LoginPage() {
         <div className="w-full max-w-105 mx-auto">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-6 flex items-center justify-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full">
-              <CldImage
-                src="y3byxgonrtyk5ti1290h"
-                alt="Agrofund Hub logo"
-                width={30}
-                height={30}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">
-              Agrofund Hub
-            </h2>
+            <Image
+              src="/grow-logo.svg"
+              alt="Grow logo"
+              width={140}
+              height={140}
+            />
           </div>
 
           {/* Login Form Container */}
-          <div className="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-6 md:p-8 transition-colors duration-200">
+          <div className="bg-gray-100  rounded-2xl border border-gray-200 p-6 md:p-8 transition-colors duration-200">
             {/* Header */}
             <div className="mb-6">
-              <h1 className="text-2xl font-semibold text-text-main-light dark:text-text-main-dark text-center mb-2">
+              <h1 className="md:text-2xl text-xl font-semibold text-text-main-light dark:text-text-main-dark text-center mb-2">
                 Welcome Back
               </h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
+              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 text-center">
                 Invest in the future of farming today.
               </p>
             </div>
@@ -191,28 +163,31 @@ export default function LoginPage() {
             {/* Google Login Button */}
             <button
               type="button"
-              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors shadow-sm mb-6"
+              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm mb-6"
             >
-              <FcGoogle className="w-5 h-5" />
+              <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
               <span>Continue with Google</span>
             </button>
 
             {/* Divider */}
             <div className="relative flex items-center py-4">
-              <div className="grow border-t border-slate-200 dark:border-slate-700" />
-              <span className="shrink-0 mx-4 text-xs font-medium text-slate-400 uppercase tracking-wider">
+              <div className="grow border-t border-slate-200" />
+              <span className="shrink-0 mx-3 md:mx-4 text-xs font-medium text-slate-400 uppercase tracking-wider">
                 Or Login with email
               </span>
-              <div className="grow border-t border-slate-200 dark:border-slate-700" />
+              <div className="grow border-t border-slate-200" />
             </div>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-3 md:gap-4"
+            >
               {/* Email Field */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1 md:gap-2">
                 <label
                   htmlFor="email"
-                  className="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                  className="text-sm font-semibold text-slate-700"
                 >
                   Email Address
                 </label>
@@ -223,7 +198,7 @@ export default function LoginPage() {
                   placeholder="name@company.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-3 px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                  className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                   required
                 />
               </div>
@@ -244,7 +219,7 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-3 px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                    className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                     required
                   />
                   <button
@@ -261,10 +236,10 @@ export default function LoginPage() {
               <div className="flex justify-end">
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-primary dark:text-text-main-dark hover:text-primary-dark dark:hover:text-primary transition-colors flex items-center gap-1 group"
+                  className="text-xs text-primary dark:text-text-main-dark hover:text-primary-dark dark:hover:text-primary transition-colors flex items-center gap-1 group"
                 >
                   Forgot Password?
-                  <FaArrowRight className="text-sm transition-transform group-hover:translate-x-1" />
+                  <FaArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
 
@@ -272,7 +247,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={!isFormValid || isLoading}
-                className={`mt-2 flex w-full items-center justify-center rounded-xl h-12 px-4 text-base font-semibold transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                className={`mt-1 md:mt-2 flex w-full items-center justify-center rounded-xl h-10 md:h-12 px-4 text-base font-semibold transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isFormValid && !isLoading
                     ? "bg-primary hover:bg-primary-dark text-white cursor-pointer focus:ring-primary"
                     : "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
@@ -291,7 +266,7 @@ export default function LoginPage() {
 
             {/* Sign Up Link */}
             <div className="mt-6 text-center">
-              <p className="text-text-main-light dark:text-text-main-dark text-sm">
+              <p className="text-xs">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/signup"

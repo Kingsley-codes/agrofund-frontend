@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -204,7 +205,7 @@ export default function SignUpPage() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 md:text-white hover:text-green-500 transition-colors font-medium text-sm md:text-base"
+            className="inline-flex items-center text-gray-600 md:text-white hover:text-lime-400 transition-colors font-medium text-sm md:text-base"
           >
             <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-2" />
             Back to Home
@@ -227,29 +228,22 @@ export default function SignUpPage() {
 
         <div className="relative z-10 p-8 md:p-12 max-w-xl text-white">
           <div className="mb-6 md:mb-8 flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 md:w-9 md:h-9 rounded-full bg-transparent backdrop-blur-sm">
-              <CldImage
-                src="y3byxgonrtyk5ti1290h"
-                alt="Agrofund Hub logo"
-                width={30}
-                height={30}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <span className="text-lg md:text-xl font-semibold tracking-tight">
-              Agrofund Hub
-            </span>
+            <Image
+              src="/grow-logo_White_Transparent.svg"
+              alt="Grow logo"
+              width={178}
+              height={178}
+            />
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-semibold leading-tight tracking-tight mb-4 md:mb-6">
-            Build your farming portfolio <br />
-            <span className="text-primary">remotely.</span>
+          <h1 className="text-2xl text-lime-400 md:text-3xl font-semibold leading-tight tracking-tight mb-4 md:mb-6">
+            Empowering those who feed the continent <br />
           </h1>
 
           <p className="text-base md:text-lg text-slate-200 mb-6 md:mb-8 leading-relaxed">
-            Join thousands of farmers who have ventured into sustainable farming
-            and livestock production. Transparency and growth, rooted in nature,
-            all from the comfort of your home.
+            Partner with thousands of farmers who have ventured into sustainable
+            farming and livestock production. Transparency and growth, all
+            rooted in nature.
           </p>
 
           {/* Trust Badge */}
@@ -291,22 +285,16 @@ export default function SignUpPage() {
         <div className="w-full max-w-105 mx-auto">
           {/* Mobile Header */}
           <div className="lg:hidden mb-6 flex items-center justify-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full">
-              <CldImage
-                src="y3byxgonrtyk5ti1290h"
-                alt="Agrofund Hub logo"
-                width={30}
-                height={30}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <h2 className="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">
-              Agrofund Hub
-            </h2>
+            <Image
+              src="/grow-logo.svg"
+              alt="Grow logo"
+              width={140}
+              height={140}
+            />
           </div>
 
           {/* Form Container with Border */}
-          <div className="rounded-2xl border bg-surface-light border-border-light p-6 md:p-8 transition-colors duration-200">
+          <div className="rounded-2xl border bg-gray-100 border-gray-200 p-6 md:p-8 transition-colors duration-200">
             <div className="w-full max-w-md flex flex-col gap-3">
               {/* Heading */}
               <div className="text-center">
@@ -356,7 +344,7 @@ export default function SignUpPage() {
                   {/* Google Auth */}
                   <button
                     type="button"
-                    className="flex w-full items-center justify-center gap-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 md:p-3.5 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors shadow-sm"
+                    className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 md:p-3.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
                   >
                     <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
                     <span>Sign up with Google</span>
@@ -364,11 +352,11 @@ export default function SignUpPage() {
 
                   {/* Divider */}
                   <div className="relative flex items-center py-1 md:py-2">
-                    <div className="grow border-t border-slate-200 dark:border-slate-700" />
+                    <div className="grow border-t border-slate-200" />
                     <span className="shrink-0 mx-3 md:mx-4 text-xs font-medium text-slate-400 uppercase tracking-wider">
                       Or sign up with email
                     </span>
-                    <div className="grow border-t border-slate-200 dark:border-slate-700" />
+                    <div className="grow border-t border-slate-200" />
                   </div>
                 </>
               )}
@@ -397,7 +385,7 @@ export default function SignUpPage() {
                           placeholder="John"
                           value={formData.firstName}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 md:py-3 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                           required
                         />
                       </div>
@@ -417,7 +405,7 @@ export default function SignUpPage() {
                           placeholder="Doe"
                           value={formData.lastName}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 md:py-3 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                           required
                         />
                       </div>
@@ -438,7 +426,7 @@ export default function SignUpPage() {
                         placeholder="name@company.com"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 md:py-3 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                        className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                         required
                       />
                     </div>
@@ -470,7 +458,7 @@ export default function SignUpPage() {
                           placeholder="Create a password"
                           value={formData.password}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-green-500 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 md:py-3 px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
                           required
                         />
                         <button
@@ -533,8 +521,8 @@ export default function SignUpPage() {
                           className={`w-full rounded-xl bg-slate-100 dark:bg-slate-800 border ${
                             confirmPasswordError && formData.confirmPassword
                               ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
-                              : "border-slate-200 dark:border-slate-700 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
-                          } py-2.5 md:py-3 px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all`}
+                              : "border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-green-500/20"
+                          } py-2.5 px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all`}
                           required
                         />
                         <button

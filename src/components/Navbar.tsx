@@ -1,10 +1,10 @@
 "use client";
 
-import { CldImage } from "next-cloudinary";
 import Link from "next/link";
 import { IoMdMenu } from "react-icons/io";
 import { GiCancel } from "react-icons/gi";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,22 +25,16 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-[#eaf3e7] dark:border-white/10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center pl-4 gap-2">
-          <Link href="/" className="flex gap-3">
-            <div className="md:h-9 md:w-9 w-8 h-8">
-              <CldImage
-                src="y3byxgonrtyk5ti1290h"
-                alt="Agrofund Hub logo"
-                width={36}
-                height={36}
-                className="object-contain w-full h-full"
-              />
-            </div>
-            <h2 className="text-2xl md:text-3xl font-semibold leading-tight tracking-tight text-primary dark:text-white">
-              Agrofund Hub
-            </h2>
+    <nav className="sticky top-0 z-50 w-full border-b border-[#eaf3e7] bg-background-light/95 backdrop-blur-sm">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center h-full pl-4 gap-2">
+          <Link href="/" className="h-full flex items-center">
+            <Image
+              src="/grow-logo.svg"
+              alt="Grow logo"
+              width={178}
+              height={178}
+            />
           </Link>
         </div>
 
@@ -49,7 +43,7 @@ export default function Navbar() {
           {navLinks.map((link) => (
             <Link
               key={link.label}
-              className="text-base font-medium hover:text-primary transition-colors"
+              className="text-lg hover:text-primary transition-colors"
               href={link.href}
             >
               {link.label}
@@ -60,13 +54,13 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/login"
-            className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary/10 px-4 text-sm font-bold text-text-main dark:text-white hover:bg-primary/20 transition-colors"
+            className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary/10 px-4 text-sm font-bold text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
           >
             Log In
           </Link>
           <Link
             href="/signup"
-            className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-[#111b0d] hover:bg-[#3cd610] hover:shadow-lg hover:shadow-primary/20 transition-all"
+            className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
           >
             Sign Up
           </Link>
@@ -74,13 +68,13 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 text-text-main dark:text-white hover:text-primary transition-colors"
+            className="md:hidden p-2 hover:text-primary transition-colors"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? (
-              <GiCancel className="w-7 h-7 text-primary hover:cursor-pointer" />
+              <GiCancel className="w-10 h-10 text-primary hover:cursor-pointer" />
             ) : (
-              <IoMdMenu className="w-7 h-7 text-primary hover:cursor-pointer" />
+              <IoMdMenu className="w-10 h-10 text-primary hover:cursor-pointer" />
             )}
           </button>
         </div>
@@ -90,19 +84,16 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden">
           {/* Backdrop */}
-          <div
-            className="fixed left-0 right-0 top-16 bottom-0 bg-black/50 z-40"
-            onClick={closeMenu}
-          />
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={closeMenu} />
 
           {/* Menu Panel */}
-          <div className="fixed right-0 top-16 w-full bg-background-light/95 dark:bg-gray-900 shadow-lg z-50 animate-slideIn">
+          <div className="absolute left-0 top-full w-full bg-background-light/95 shadow-lg z-50 animate-slideIn">
             <div className="flex flex-col p-4">
               {/* Mobile Nav Links */}
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
-                  className="py-3 px-4 text-base font-medium hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                  className="py-3 px-4 text-base font-medium hover:text-primary hover:bg-gray-200 rounded-lg transition-colors"
                   href={link.href}
                   onClick={closeMenu}
                 >
@@ -111,17 +102,17 @@ export default function Navbar() {
               ))}
 
               {/* Mobile Auth Buttons */}
-              <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-gray-300 dark:border-gray-700">
                 <Link
                   href="/login"
-                  className="flex h-12 items-center justify-center rounded-xl bg-primary/10 text-base font-bold text-text-main dark:text-white hover:bg-primary/20 transition-colors"
+                  className="flex h-12 items-center justify-center rounded-xl border-primary border bg-primary/10 text-base font-bold text-primary hover:bg-primary hover:text-white transition-colors"
                   onClick={closeMenu}
                 >
                   Log In
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex h-12 items-center justify-center rounded-xl bg-primary text-base font-bold text-[#111b0d] hover:bg-[#3cd610] hover:shadow-lg hover:shadow-primary/20 transition-all"
+                  className="flex h-12 items-center justify-center rounded-xl bg-primary text-base font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
                   onClick={closeMenu}
                 >
                   Sign Up

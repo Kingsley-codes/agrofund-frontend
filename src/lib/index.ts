@@ -35,7 +35,7 @@ export interface ApiProduce {
   minimumUnit: number;
   price: number;
   category: string;
-  duration: number;
+  duration: string;
   ROI: number;
   remainingUnit: number;
   remainingPercentage: number;

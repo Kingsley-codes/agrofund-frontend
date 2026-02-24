@@ -5,21 +5,14 @@ import { useState, useEffect } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
-  FaPlay,
   FaCheckCircle,
   FaChartLine,
-  FaTint,
   FaCalendarAlt,
   FaChartBar,
   FaShieldAlt,
-  FaMoneyBillWave,
   FaUsers,
   FaUserCheck,
-  FaBolt,
-  // FaSensors,
-  FaIndustry,
   FaBoxOpen,
-  FaSeedling,
 } from "react-icons/fa";
 
 // Type definitions
@@ -59,7 +52,7 @@ interface Slide {
   bgImage: string;
   badge?: BadgeProps;
   stats?: StatProps[];
-  buttons: ButtonProps[];
+  buttons?: ButtonProps[];
   monitoringUI?: {
     title: string;
     subtitle: string;
@@ -76,9 +69,9 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Own Farms. Farm Remotely.",
+    title: "Grow Africa – Invest in Food. Empower Farmers. Grow Together.",
     subtitle:
-      "Become a real farmer without stepping on the field. Own agricultural projects in Nigeria's heartlands and earn from every harvest.",
+      "Grow Africa connects everyday investors to real farming projects across Africa — funding production, supporting farmers, and earning from harvest outcomes.",
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213215/f3tfcfmz8hotxeekiqlb.png",
     badge: {
@@ -88,18 +81,18 @@ const slides: Slide[] = [
     stats: [
       { value: "5,000+", label: "Active Farmers" },
       { value: "12,000", label: "Hectares Owned" },
-      { value: "₦2.4B", label: "Harvest Returns" },
+      { value: "₦500M", label: "Harvest Returns" },
     ],
     buttons: [
-      { text: "Start Farming Remotely", primary: true, icon: FaChartLine },
-      { text: "View Active Farms", primary: false },
+      { text: "Start Investing", primary: true, icon: FaChartLine },
+      { text: "Explore Projects", primary: false },
     ],
   },
   {
     id: 2,
-    title: "At Agrofund Hub, You Own the Farm.",
+    title: "Your Investment Goes Directly to the Farm",
     subtitle:
-      "From planting to harvest, your farms are professionally managed while you track progress remotely. Experience the power of commercial-scale agriculture without getting your hands dirty.",
+      "Your funds are used to supply farmers with seeds, fertilisers, equipment and inputs — not cash handouts — ensuring every naira is spent on real production.",
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213423/mptkzxaetnjot7uhfxlv.png",
     badge: {
@@ -116,9 +109,9 @@ const slides: Slide[] = [
   },
   {
     id: 3,
-    title: "Monitor Your Farms in Real Time",
+    title: "Track Every Stage of Your Farm Investment",
     subtitle:
-      "Get updates, reports, and harvest timelines — all without leaving your location. Verified data from the field to your screen.",
+      "From land preparation to planting, crop growth and harvest, Grow Africa keeps you informed at every phase through real-time updates and notifications",
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213779/mnpfq3idjgfrve9grtyw.png",
     badge: {
@@ -139,16 +132,12 @@ const slides: Slide[] = [
         subtitle: "Projected: Oct 2026",
       },
     ],
-    buttons: [
-      { text: "See How It Works", primary: true },
-      { text: "Play Video", primary: false, icon: FaPlay },
-    ],
   },
   {
     id: 4,
-    title: "Farm for Profit. Grow Food for Millions.",
+    title: "Empowering Farmers. Strengthening Communities.",
     subtitle:
-      "Your remote farms create jobs, strengthen food supply, and deliver sustainable income for local communities across Nigeria.",
+      "We work directly with trusted farming communities to remove financial barriers and help farmers focus on what they do best — growing food.",
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213837/yvapk8gjlpc0lkzhtfk3.png",
     badge: {
@@ -162,20 +151,12 @@ const slides: Slide[] = [
       { value: "100%", label: "Local Sourcing" },
     ],
     buttons: [{ text: "Farm With Impact", primary: true }],
-    socialProof: {
-      text: "Join 5,000+ remote farmers",
-      avatars: [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuAIssT-bhGj_pcJwI2VfqibuVZ6GaosLnw2LqVwN6FbF0d5elUVlAghnUICBswpG5Belk_aBZZs9K-E0c7lpBuLq8JrpYiH_bKqpdwdhk4DHYCKwUpdpa6UbB-3gz-IeIhsWW-dG0aX3Pd3dtPpZZOQOOYmnf9YjGqUre9NrlOwYes98COCbHJPzUinL5rB3c4QF0UPhUibwpGLDhXMAhwkImmtM5QjrIwxXdD_Y6yHHJf1VV4x2FxkS-OTYCwMqA7VkrTMtDOWA33c",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDfDidyBdAGNJSH4j6xJo5bCnCMg9F0m0nq08l2VkTaja_6Eoq5WgbKvLTGqScHSrvEKly6-R6T-VrwSWU7F6BsqP9tHLRmdIOwc4S5hdsetB046e_DPtc8NO0FwdRpZCyag3qi8tNroPMnpDpACJiX2T1ApL049c6ZmB_jCXrpgAm8EpVO-XqFF67lb9geH-_7QL-eYgITAAnb2SgVNQgKiEDzK40-TmQgBj_Jd58SuQ_WGNBTnsTxtyiAVODd1vBlemcGoYyv5mFN",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuAUD02SFGER4kHv3OWAmmzZ8Q-es1ZhOu7GdhxDcvmSo9GXJo1ZyQrFEt4jo_ZfLNdSTvRBVvV-dSZkGKRA8PDkbqltG-unZK_ym_gmlunbU_Kh2Cj8-RTufJK3q0q8gaOaixSeLaduunkkqhku2OsH0dLX59KbUdxUpEhPl7sVR5aovFCmDqApuhvY6q1sTfLSQNHxWE6LKYijvvjTnL0nrLMtmvDSOBxpkn7kTBMFm9wv1X88WShnn9xsinXGu19phI-6y1ysF8Ix",
-      ],
-    },
   },
   {
     id: 5,
-    title: "Earn From Every Harvest Cycle.",
+    title: "Harvest Returns, Built on Real Impact",
     subtitle:
-      "Structured farming projects with clear timelines, realistic yields, and shared success. From yams to maize, we bridge the gap between rural bounty and urban ownership.",
+      "Structured farming projects with clear timelines, realistic yields, and shared success. We bridge the gap between rural bounty and urban ownership.",
     bgImage:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBaGzTc4uLtjnogTXxRMYZiMn8126RQ5cw4wxWgGiO3WZjtA0u4uuQDiqWpGqKpDVgyrexiroNhUreGqwFgv8pyxMffK_FW05DC592s2ZdY6ya9DeZQPu-htLWi8XNpOaiCIfQuoXQdW51NLcRMxluTXk3qR_QZJ9Q44B6Hx_3tW9GvhBV7jg7UJMc9P4p23YmSDqq6DLQZDJKvYkxExUE45Dc_hY-_8Bsh0gdHyEzRBW-4KZxYFmfInuHN0--4WZ0r9cezs3yY5G7D",
     badge: {
@@ -188,7 +169,7 @@ const slides: Slide[] = [
       {
         icon: FaChartBar,
         title: "Avg. Yield Increase",
-        value: "+25%",
+        value: "Up to +35%",
         color: "text-[#1a6b41]",
       },
       {
@@ -197,10 +178,6 @@ const slides: Slide[] = [
         value: "10,000+",
         color: "text-[#B89C5C]",
       },
-    ],
-    buttons: [
-      { text: "Join as a Remote Farmer", primary: true, icon: FaChartLine },
-      { text: "View Live Stats", primary: false },
     ],
   },
 ];
@@ -234,7 +211,7 @@ export default function HeroSlideshow() {
   const slide = slides[currentSlide];
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <div
@@ -246,14 +223,14 @@ export default function HeroSlideshow() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-screen flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-screen flex pt-15">
         <div className="max-w-2xl">
           {/* Badge */}
           {slide.badge && (
             <div
               className={`inline-flex items-center gap-2 ${
                 slide.badge.color || "bg-white/10"
-              } text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-6 ${
+              } text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 ${
                 slide.badge.animate ? "animate-pulse" : ""
               } backdrop-blur-md border border-white/20`}
             >
@@ -263,23 +240,23 @@ export default function HeroSlideshow() {
           )}
 
           {/* Title */}
-          <h1 className="text-white text-4xl md:text-6xl font-black leading-[1.1] tracking-tight mb-6">
+          <h1 className="text-white text-3xl md:text-5xl font-semibold leading-[1.1] tracking-tight mb-4">
             {slide.title}
           </h1>
 
           {/* Subtitle */}
-          <p className="text-white/80 text-lg md:text-xl mb-8 max-w-xl">
+          <p className="text-white/80 text-md md:text-lg mb-6 max-w-xl">
             {slide.subtitle}
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-8">
-            {slide.buttons.map((button, index) => (
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            {slide.buttons?.map((button, index) => (
               <button
                 key={index}
-                className={`flex items-center justify-center gap-2 h-14 px-8 rounded-xl font-bold text-lg transition-all ${
+                className={`flex items-center justify-center gap-2 h-12 px-8 rounded-xl font-semibold text-md transition-all ${
                   button.primary
-                    ? "bg-[#1a6b41] text-white hover:bg-[#1a6b41]/90 shadow-lg shadow-[#1a6b41]/30 hover:scale-[1.02]"
+                    ? "bg-primary text-white hover:bg-primary-dark shadow-lg shadow-[#1a6b41]/30 hover:scale-[1.02]"
                     : "border-2 border-white/20 text-white hover:border-white/40 backdrop-blur-md"
                 }`}
               >
@@ -291,10 +268,12 @@ export default function HeroSlideshow() {
 
           {/* Stats Section - Slide 1 */}
           {slide.stats && (
-            <div className="flex gap-8 pt-8 border-t border-white/10">
+            <div className="flex gap-8 pt-6 border-t border-white/10">
               {slide.stats.map((stat, index) => (
                 <div key={index}>
-                  <p className="text-white text-2xl font-bold">{stat.value}</p>
+                  <p className="text-white text-xl font-semibold">
+                    {stat.value}
+                  </p>
                   <p className="text-white/60 text-xs uppercase font-bold tracking-widest">
                     {stat.label}
                   </p>
@@ -309,30 +288,13 @@ export default function HeroSlideshow() {
             </div>
           )}
 
-          {/* Monitoring UI - Slide 2 */}
-          {slide.monitoringUI && (
-            <div className="absolute top-10 right-10 p-6 bg-white/90 backdrop-blur rounded-2xl border border-white/20 shadow-2xl max-w-70 hidden lg:block">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <p className="text-[10px] uppercase font-bold text-[#1a6b41] tracking-widest">
-                    {slide.monitoringUI.title}
-                  </p>
-                  <h3 className="text-sm font-bold">
-                    {slide.monitoringUI.subtitle}
-                  </h3>
-                </div>
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-              </div>
-            </div>
-          )}
-
           {/* Stats Cards - Slide 3 & 5 */}
           {slide.statsCards && (
             <div className="flex flex-col md:flex-row gap-4 mt-8">
               {slide.statsCards.map((card, index) => (
                 <div
                   key={index}
-                  className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-xl w-64 shadow-2xl"
+                  className="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl w-58 shadow-2xl"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-white/70 text-xs font-medium uppercase">
@@ -340,33 +302,33 @@ export default function HeroSlideshow() {
                     </p>
                     {card.icon && (
                       <card.icon
-                        className={`w-5 h-5 ${card.color || "text-[#1a6b41]"}`}
+                        className={`w-5 h-5 ${card.color || "text-lime-400"}`}
                       />
                     )}
                   </div>
                   <div className="flex items-baseline gap-2">
                     <p
-                      className={`text-white text-3xl font-black ${
+                      className={`text-white text-2xl font-semibold ${
                         card.color || ""
                       }`}
                     >
                       {card.value}
                     </p>
                     {card.trend && (
-                      <p className="text-[#1a6b41] text-sm font-bold">
+                      <p className="text-primary text-sm font-bold">
                         {card.trend}
                       </p>
                     )}
                   </div>
                   {card.subtitle && (
-                    <p className="text-white/60 text-sm mt-1">
+                    <p className="text-white/60 text-xs mt-1">
                       {card.subtitle}
                     </p>
                   )}
                   {card.percentage !== undefined && (
                     <div className="w-full bg-white/20 h-1.5 rounded-full mt-4 overflow-hidden">
                       <div
-                        className="bg-[#1a6b41] h-full rounded-full"
+                        className="bg-lime-400 h-full rounded-full"
                         style={{ width: `${card.percentage}%` }}
                       ></div>
                     </div>
@@ -396,7 +358,7 @@ export default function HeroSlideshow() {
         </div>
       </div>
 
-      {/* Slide Indicators */}
+      {/* Slide Indicators
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
         <button
           onClick={prevSlide}
@@ -431,7 +393,7 @@ export default function HeroSlideshow() {
         >
           <FaChevronRight className="w-5 h-5" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
