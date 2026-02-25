@@ -109,13 +109,13 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
             <span>{fundedPercentage}% Funded</span>
             <span>{opportunity.remainingUnit} Units Left</span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 ">
             <div
               className="h-full bg-primary rounded-full"
               style={{ width: `${fundedPercentage}%` }}
             ></div>
           </div>
-          <button className="mt-3 w-full rounded-lg bg-primary py-2.5 text-sm font-bold text-[#111b0d] hover:bg-[#3cd610] transition-colors">
+          <button className="mt-3 w-full rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors">
             Invest Now
           </button>
         </div>

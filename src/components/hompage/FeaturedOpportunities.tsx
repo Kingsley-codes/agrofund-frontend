@@ -1,6 +1,7 @@
 import OpportunityCard from "../opportunitiesPage/OpportunityCard";
 import { ApiResponse, ApiProduce } from "@/lib";
 import axios from "axios";
+import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
 async function getFeaturedOpportunities(): Promise<ApiProduce[]> {
@@ -41,12 +42,12 @@ export default async function FeaturedOpportunities() {
             Featured Opportunities
           </h2>
 
-          <a
+          <Link
             className="hidden items-center gap-1 text-sm font-bold text-primary transition-colors hover:text-primary-dark sm:flex"
-            href="#"
+            href="/opportunities"
           >
             View All Projects <FaArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,12 +57,12 @@ export default async function FeaturedOpportunities() {
         </div>
 
         <div className="mt-8 text-center sm:hidden">
-          <a
+          <Link
             className="inline-flex items-center gap-1 text-sm font-bold text-primary transition-colors hover:text-primary-dark"
-            href="#"
+            href="/opportunities"
           >
             View All Projects <FaArrowRight />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
