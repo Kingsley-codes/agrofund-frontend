@@ -1,4 +1,5 @@
 import { ApiProduce } from "@/lib";
+import Link from "next/link";
 import { GiGoat, GiDoubleFish, GiGrass } from "react-icons/gi";
 import { TbCurrencyNaira } from "react-icons/tb";
 
@@ -16,23 +17,23 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
     switch (cat) {
       case "crops":
         return {
-          bg: "bg-green-100 dark:bg-green-900/30",
-          text: "text-green-600 dark:text-green-400",
+          bg: "bg-green-100",
+          text: "text-green-600",
         };
       case "livestock":
         return {
-          bg: "bg-orange-100 dark:bg-orange-900/30",
-          text: "text-red-700 dark:text-orange-400",
+          bg: "bg-orange-100",
+          text: "text-red-700",
         };
       case "aquaculture":
         return {
-          bg: "bg-blue-100 dark:bg-blue-900/30",
-          text: "text-blue-700 dark:text-blue-400",
+          bg: "bg-blue-100",
+          text: "text-blue-700",
         };
       default:
         return {
-          bg: "bg-yellow-100 dark:bg-yellow-900/30",
-          text: "text-yellow-700 dark:text-yellow-400",
+          bg: "bg-yellow-100",
+          text: "text-yellow-700",
         };
     }
   };
@@ -57,7 +58,7 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
   const colors = getTypeColor(opportunity.category);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark shadow-sm hover:shadow-xl transition-shadow border border-black/5 dark:border-white/5">
+    <div className="flex flex-col overflow-hidden rounded-2xl bg-gray-100 shadow-sm hover:shadow-xl transition-shadow border border-black/5">
       <div className="relative h-48 w-full bg-gray-200">
         <div className="absolute top-3 left-3 z-10 rounded-md bg-white/80 px-2 py-1 text-xs font-bold text-primary backdrop-blur-sm">
           {opportunity.produceName}
@@ -81,21 +82,19 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
           </span>
         </div>
 
-        <h3 className="text-lg font-bold text-gray-700 dark:text-white">
-          {opportunity.title}
-        </h3>
-        <p className="mb-3 text-sm  text-gray-500 dark:text-white">
-          {opportunity.produceName}
-        </p>
+        <h3 className="text-lg font-bold text-gray-700">{opportunity.title}</h3>
+        <p className="mb-3 text-sm text-gray-500">{opportunity.produceName}</p>
 
-        <div className="grid grid-cols-2 gap-4 mb-4 py-3 border-y border-dashed border-gray-200 dark:border-white/10">
+        <div className="grid grid-cols-2 rounded-2xl px-2 gap-4 -mx-3 mb-4 py-3 border-y bg-gray-300 border-dashed border-gray-200">
           <div>
             <p className="text-xs text-text-muted">ROI</p>
-            <p className="text-lg font-bold text-primary">{opportunity.ROI}</p>
+            <p className="text-lg font-bold text-primary">
+              {opportunity.ROI} %
+            </p>
           </div>
           <div className="text-right">
             <p className="text-xs text-text-muted">Unit Price</p>
-            <p className="text-lg font-bold text-gray-700 flex items-center justify-end dark:text-white">
+            <p className="text-lg font-bold text-gray-700 flex items-center justify-end">
               <span className="text-gray-700 w-4 h-4">
                 <TbCurrencyNaira />
               </span>
@@ -109,15 +108,21 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
             <span>{fundedPercentage}% Funded</span>
             <span>{opportunity.remainingUnit} Units Left</span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100 ">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
             <div
               className="h-full bg-primary rounded-full"
               style={{ width: `${fundedPercentage}%` }}
             ></div>
           </div>
-          <button className="mt-3 w-full rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors">
-            Invest Now
-          </button>
+
+          <div className="flex gap-2">
+            <button className="flex-1 mt-3 rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors">
+              <Link href="/checkout">Invest Now</Link>
+            </button>
+            <button className="flex-1 mt-3 rounded-lg bg-white border border-primary py-2.5 text-sm font-bold text-gray-700 hover:bg-primary/50 hover:text-primary transition-colors">
+              <Link href={`/opportunities/${opportunity._id}`}>Details</Link>
+            </button>
+          </div>
         </div>
       </div>
     </div>
