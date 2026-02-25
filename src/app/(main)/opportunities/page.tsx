@@ -17,7 +17,11 @@ export default function OpportunitiesPage() {
       try {
         setLoading(true);
 
-        const response = await axios.get<ApiResponse>("/api/produce");
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+        const response = await axios.get<ApiResponse>(
+          `${backendUrl}/api/produce`,
+        );
 
         if (response.data.success) {
           setOpportunities(response.data.produce);
@@ -57,7 +61,7 @@ export default function OpportunitiesPage() {
             <p className="text-lg text-red-500">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-4 rounded-lg bg-primary px-4 py-2 text-[#111b0d] transition-colors hover:bg-[#3cd610]"
+              className="mt-4 rounded-lg bg-primary px-4 py-2 text-white transition-colors hover:bg-primary-dark"
             >
               Retry
             </button>
