@@ -63,6 +63,7 @@ export default async function Page({ params }: PageProps) {
 
   const roiValue =
     typeof produce.ROI === "number" ? `+${produce.ROI}%` : produce.ROI;
+  // Colors for category pill
 
   return (
     <>
