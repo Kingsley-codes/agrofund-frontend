@@ -68,10 +68,7 @@ export default function LoginPage() {
           router.push("/dashboard");
         }, 1500);
       } else {
-        toast.error(
-          response.data.message ||
-            "Registration completed but with an unexpected response.",
-        );
+        toast.error(response.data.message || "An error occurred during login.");
       }
     } catch (error: any) {
       toast.error(

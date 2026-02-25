@@ -10,10 +10,6 @@ async function getFeaturedOpportunities(): Promise<ApiProduce[]> {
   if (!backendUrl) {
     throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
   }
-  console.log(
-    "Fetching featured opportunities from:",
-    `${backendUrl}/api/produce?isFeatured=true`,
-  );
 
   const res = await axios.get<ApiResponse>(
     `${backendUrl}/api/produce?isFeatured=true`,
