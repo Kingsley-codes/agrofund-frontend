@@ -65,27 +65,3 @@ export interface ApiResponse {
   count: number;
   produce: ApiProduce[];
 }
-
-export interface ProducerFormData {
-  businessName: string;
-  nin: string;
-  businessType: string;
-  primaryCrop: string;
-  documents: {
-    ninCard: File | null;
-    landTitle: File | null;
-    businessReg: File | null;
-  };
-  farmlandPhotos: File[];
-  guarantors: Guarantor[];
-}
-
-export interface Guarantor {
-  id: number;
-  name: string;
-  phone: string;
-  nin: string;
-  photo: File | null;
-}
-
-export type OnboardingStep = "business" | "documents" | "photos" | "guarantors";

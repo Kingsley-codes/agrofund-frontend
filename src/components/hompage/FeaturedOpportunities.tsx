@@ -1,18 +1,21 @@
 import OpportunityCard from "../opportunitiesPage/OpportunityCard";
-import { ApiProduce } from "@/lib";
+import { ApiResponse, ApiProduce } from "@/lib";
 import axios from "axios";
 import { FaArrowRight } from "react-icons/fa";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function getOpportunities(): Promise<ApiProduce[]> {
-  const res = await axios.get<ApiProduce[]>(`${backendUrl}/api/produce`, {
-    headers: {
-      "Cache-Control": "no-store",
+  const res = await axios.get<ApiResponse>(
+    `${backendUrl}/api/produce?isFeatured=true`,
+    {
+      headers: {
+        "Cache-Control": "no-store",
+      },
     },
-  });
+  );
 
-  return res.data;
+  return res.data.produce;
 }
 export default async function FeaturedOpportunities() {
   const opportunities = await getOpportunities();
