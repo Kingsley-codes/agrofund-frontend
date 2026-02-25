@@ -1,26 +1,19 @@
 import OpportunityCard from "../opportunitiesPage/OpportunityCard";
 import { ApiProduce } from "@/lib";
+import axios from "axios";
 import { FaArrowRight } from "react-icons/fa";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function getOpportunities(): Promise<ApiProduce[]> {
-  const res = await fetch(`${backendUrl}/api/produce`, {
-    // prevents stale data if you want it always fresh
-    cache: "no-store",
+  const res = await axios.get<ApiProduce[]>(`${backendUrl}/api/produce`, {
+    headers: {
+      "Cache-Control": "no-store",
+    },
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch opportunities");
-  }
-
-  const data = await res.json();
-
-  // adjust this only if your API wraps the array
-  // e.g { data: [...] }
-  return data;
+  return res.data;
 }
-
 export default async function FeaturedOpportunities() {
   const opportunities = await getOpportunities();
 
