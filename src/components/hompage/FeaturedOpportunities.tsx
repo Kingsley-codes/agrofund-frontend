@@ -3,9 +3,17 @@ import { ApiResponse, ApiProduce } from "@/lib";
 import axios from "axios";
 import { FaArrowRight } from "react-icons/fa";
 
-const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+async function getFeaturedOpportunities(): Promise<ApiProduce[]> {
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-async function getOpportunities(): Promise<ApiProduce[]> {
+  if (!backendUrl) {
+    throw new Error("NEXT_PUBLIC_BACKEND_URL is not defined");
+  }
+  console.log(
+    "Fetching featured opportunities from:",
+    `${backendUrl}/api/produce?isFeatured=true`,
+  );
+
   const res = await axios.get<ApiResponse>(
     `${backendUrl}/api/produce?isFeatured=true`,
     {
@@ -17,34 +25,39 @@ async function getOpportunities(): Promise<ApiProduce[]> {
 
   return res.data.produce;
 }
+
 export default async function FeaturedOpportunities() {
-  const opportunities = await getOpportunities();
+  const opportunities = await getFeaturedOpportunities();
+
+  if (!opportunities || opportunities.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="bg-[#f0fdf4] dark:bg-[#0f1a0c] py-16 md:py-24">
+    <section className="bg-[#f0fdf4] py-16 dark:bg-[#0f1a0c] md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-10">
-          <h2 className="text-2xl font-bold text-text-main dark:text-white md:text-3xl tracking-tight">
+        <div className="mb-10 flex items-center justify-between">
+          <h2 className="text-2xl font-bold tracking-tight text-text-main dark:text-white md:text-3xl">
             Featured Opportunities
           </h2>
 
           <a
-            className="hidden sm:flex items-center gap-1 text-sm font-bold text-primary hover:text-primary-dark transition-colors"
+            className="hidden items-center gap-1 text-sm font-bold text-primary transition-colors hover:text-primary-dark sm:flex"
             href="#"
           >
             View All Projects <FaArrowRight className="h-4 w-4" />
           </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {opportunities.map((opportunity) => (
             <OpportunityCard key={opportunity._id} opportunity={opportunity} />
           ))}
         </div>
 
-        <div className="mt-8 sm:hidden text-center">
+        <div className="mt-8 text-center sm:hidden">
           <a
-            className="inline-flex items-center gap-1 text-sm font-bold text-primary hover:text-primary-dark transition-colors"
+            className="inline-flex items-center gap-1 text-sm font-bold text-primary transition-colors hover:text-primary-dark"
             href="#"
           >
             View All Projects <FaArrowRight />
