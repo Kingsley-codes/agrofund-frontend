@@ -106,7 +106,7 @@ export function InvestmentCard({
 
       {/* Action */}
       <div className="flex flex-col gap-3 mt-2">
-        <button className="w-full h-12 bg-primary text-gray-900 font-bold rounded-xl text-lg hover:bg-green-600 transition-all flex items-center justify-center gap-2">
+        <button className="w-full h-12 bg-primary text-gray-100 font-bold rounded-xl text-lg hover:bg-primary-dark transition-all flex items-center justify-center gap-2">
           Invest Now <FaMoneyBillWave />
         </button>
 

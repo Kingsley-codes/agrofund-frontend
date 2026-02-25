@@ -10,8 +10,7 @@ import Link from "next/link";
 
 async function getProduce(produceId: string): Promise<ApiProduce | null> {
   try {
-    const backendUrl =
-      process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const response = await axios.get(`${backendUrl}/api/produce/${produceId}`);
 
     return response.data.produce;
@@ -22,13 +21,15 @@ async function getProduce(produceId: string): Promise<ApiProduce | null> {
 }
 
 interface PageProps {
-  params: {
+  params: Promise<{
     produceId: string;
-  };
+  }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const produce = await getProduce(params.produceId);
+  const { produceId } = await params;
+
+  const produce = await getProduce(produceId);
 
   if (!produce) {
     return (
@@ -75,7 +76,7 @@ export default async function Page({ params }: PageProps) {
                 { label: "Opportunities", href: "/opportunities" },
                 {
                   label: produce.title,
-                  href: `/opportunities/${params.produceId}`,
+                  href: `/opportunities/${produceId}`,
                 },
               ]}
             />
