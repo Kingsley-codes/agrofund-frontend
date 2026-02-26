@@ -2,8 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { FaMinus, FaPlus, FaMoneyBillWave } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 interface InvestmentCardProps {
+  produceId: string;
   unitPrice: number;
   fundedPercent: number;
   soldUnits: number;
@@ -11,7 +13,10 @@ interface InvestmentCardProps {
   minimumUnit: number;
 }
 
+const router = useRouter();
+
 export function InvestmentCard({
+  produceId,
   unitPrice,
   fundedPercent,
   soldUnits,
@@ -106,7 +111,12 @@ export function InvestmentCard({
 
       {/* Action */}
       <div className="flex flex-col gap-3 mt-2">
-        <button className="w-full h-12 bg-primary text-gray-100 font-bold rounded-xl text-lg hover:bg-primary-dark transition-all flex items-center justify-center gap-2">
+        <button
+          onClick={() => {
+            router.push(`/checkout?produceId=${produceId}&units=${units}`);
+          }}
+          className="w-full h-12 bg-primary text-gray-100 font-bold rounded-xl text-lg hover:bg-primary-dark transition-all flex items-center justify-center gap-2"
+        >
           Invest Now <FaMoneyBillWave />
         </button>
 

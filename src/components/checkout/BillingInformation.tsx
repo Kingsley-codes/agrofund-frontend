@@ -5,7 +5,7 @@ export default function BillingInformation() {
         <div className="size-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
           1
         </div>
-        <h3 className="text-xl font-bold">Billing Information</h3>
+        <h3 className="text-xl font-semibold">Billing Information</h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -14,8 +14,8 @@ export default function BillingInformation() {
             First Name
           </label>
           <input
-            className="w-full rounded-lg border-gray-200 bg-background-light focus:border-primary focus:ring-primary"
-            defaultValue="Alex"
+            placeholder="First name"
+            className="w-full rounded-lg py-1 pl-5 border border-gray-200 focus:border-gray-400 focus:ring-primary"
           />
         </div>
 
@@ -24,8 +24,8 @@ export default function BillingInformation() {
             Last Name
           </label>
           <input
-            className="w-full rounded-lg border-gray-200 bg-background-light focus:border-primary focus:ring-primary"
-            defaultValue="Morgan"
+            placeholder="Last name"
+            className="w-full rounded-lg py-1 pl-5 border border-gray-200 focus:border-gray-400 focus:ring-primary"
           />
         </div>
 
@@ -35,8 +35,8 @@ export default function BillingInformation() {
           </label>
           <input
             type="email"
-            className="w-full rounded-lg border-gray-200 bg-background-light focus:border-primary focus:ring-primary"
-            defaultValue="alex.morgan@example.com"
+            placeholder="Email address"
+            className="w-full rounded-lg py-1 pl-5 border border-gray-200 focus:border-gray-400 focus:ring-primary"
           />
         </div>
       </div>

@@ -42,7 +42,7 @@ export default async function Page({ params }: PageProps) {
         </p>
         <Link
           href="/opportunities"
-          className="px-6 py-3 bg-primary text-gray-900 font-semibold rounded-xl hover:bg-primary-dark hover:text-white transition-colors"
+          className="px-6 py-3 bg-primary text-gray-100 font-semibold rounded-xl hover:bg-primary-dark hover:text-white transition-colors"
         >
           Browse Opportunities
         </Link>
@@ -63,7 +63,6 @@ export default async function Page({ params }: PageProps) {
 
   const roiValue =
     typeof produce.ROI === "number" ? `+${produce.ROI}%` : produce.ROI;
-  // Colors for category pill
 
   return (
     <>
@@ -119,6 +118,7 @@ export default async function Page({ params }: PageProps) {
           <div className="lg:col-span-4">
             <div className="sticky top-24 flex flex-col gap-4">
               <InvestmentCard
+                produceId={produce._id}
                 unitPrice={produce.price}
                 fundedPercent={fundedPercent}
                 soldUnits={soldUnits}
