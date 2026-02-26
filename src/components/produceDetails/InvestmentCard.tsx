@@ -13,8 +13,6 @@ interface InvestmentCardProps {
   minimumUnit: number;
 }
 
-const router = useRouter();
-
 export function InvestmentCard({
   produceId,
   unitPrice,
@@ -23,6 +21,8 @@ export function InvestmentCard({
   remainingUnits,
   minimumUnit,
 }: InvestmentCardProps) {
+  const router = useRouter();
+
   const [units, setUnits] = useState(minimumUnit);
 
   const total = useMemo(() => units * unitPrice, [units, unitPrice]);
