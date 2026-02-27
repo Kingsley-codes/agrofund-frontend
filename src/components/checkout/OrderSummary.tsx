@@ -5,9 +5,18 @@ export default function OrderSummary({
   produce,
   units,
 }: {
-  produce: ApiProduce;
+  produce: ApiProduce | null;
   units: number;
 }) {
+
+  if (!produce) {
+    return (
+      <div className="bg-white p-6 rounded-xl border">
+        Loading order summary...
+      </div>
+    );
+  }
+
   const unitPrice = produce.price; // or produce.unitPrice (use your real field)
   const total = unitPrice * units;
 
