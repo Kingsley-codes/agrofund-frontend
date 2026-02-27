@@ -26,7 +26,7 @@ export default function CheckoutPage() {
 
     const fetchProduce = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/produce/${produceId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/produce/${produceId}`,
       );
 
       const data = await res.json();
