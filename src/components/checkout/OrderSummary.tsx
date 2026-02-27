@@ -1,5 +1,5 @@
 import { ApiProduce } from "@/lib";
-import { FiInfo, FiArrowRight, FiLock } from "react-icons/fi";
+import { FiArrowRight, FiLock } from "react-icons/fi";
 
 export default function OrderSummary({
   produce,
@@ -43,23 +43,20 @@ export default function OrderSummary({
 
       <div className="p-6 space-y-4 text-sm">
         <Row label="Unit Price" value={`₦${unitPrice.toLocaleString()}`} />
+       <Divider />
         <Row label="Quantity" value={`${units} Units`} />
 
         <Divider />
 
-        <Row label="Subtotal" value={`₦${total.toLocaleString()}`} />
+     
 
-        <Divider />
 
-        <span className="text-2xl font-black font-mono">
-          ₦{total.toLocaleString()}
-        </span>
 
         <div className="flex justify-between items-end pb-2">
           <span className="text-base font-bold text-gray-800">
             Total to Pay
           </span>
-          <span className="text-2xl font-black font-mono">₦1,510.00</span>
+          <span className="text-2xl font-bold">₦{total.toLocaleString()}</span>
         </div>
 
         <div className="flex items-start gap-3 py-2">
@@ -82,8 +79,8 @@ export default function OrderSummary({
           </div>
         </div>
 
-        <button className="w-full bg-primary hover:bg-primary-dark text-black font-bold py-4 px-6 rounded-xl shadow-lg shadow-green-500/20 transition flex items-center justify-center gap-2">
-          Confirm & Pay ₦1,510.00
+        <button className="w-full bg-primary hover:bg-primary-dark text-gray-100 font-bold py-4 px-6 rounded-xl shadow-lg shadow-green-500/20 transition flex items-center justify-center gap-2">
+          Confirm & Pay ₦{total.toLocaleString()}
           <FiArrowRight />
         </button>
 
