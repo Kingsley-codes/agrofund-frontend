@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { IoMdMenu } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -16,6 +16,7 @@ type NavbarUser = {
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [user, setUser] = useState<NavbarUser | null>(() => {
     if (typeof window === "undefined") return null;
 
@@ -32,6 +33,12 @@ export default function Navbar() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  useEffect(() => {
+  const close = () => setIsUserMenuOpen(false);
+  window.addEventListener("click", close);
+  return () => window.removeEventListener("click", close);
+}, []);
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -110,35 +117,57 @@ const handleLogout = async () => {
               </Link>
             </>
           ) : (
-            <div className="hidden md:flex items-center gap-4">
-              {/* Avatar */}
-              {user?.avatar ? (
-                <Image
-                  src={user.avatar}
-                  alt="User avatar"
-                  width={36}
-                  height={36}
-                  className="rounded-full object-cover"
-                />
-              ) : (
-                <FaUserCircle className="text-2xl text-primary" />
-              )}
+  <div className="relative hidden md:flex items-center">
+    {/* Avatar button */}
+    <button
+  onClick={(e) => {
+    e.stopPropagation();
+    setIsUserMenuOpen((v) => !v);
+  }}
+   className="flex items-center focus:outline-none"
+>
+      {user?.avatar ? (
+        <Image
+          src={user.avatar}
+          alt="User avatar"
+          width={36}
+          height={36}
+          className="rounded-full object-cover"
+        />
+      ) : (
+        <FaUserCircle className="text-3xl text-primary" />
+      )}
+    </button>
 
-              <Link
-                href="/dashboard"
-                className="text-sm font-semibold hover:text-primary"
-              >
-                Dashboard
-              </Link>
+    {/* Dropdown */}
+    {isUserMenuOpen && (
+  <div
+    onClick={(e) => e.stopPropagation()}
+    className="absolute right-0 top-12 w-44 rounded-xl bg-white shadow-lg border border-gray-200 z-50 overflow-hidden"
+  >
+       <Link
+          href="/dashboard"
+          onClick={() => setIsUserMenuOpen(false)}
+          className="block px-4 py-3 text-sm hover:bg-gray-100"
+        >
+          Dashboard
+        </Link>
 
-              <button
-                onClick={handleLogout}
-                className="text-sm font-semibold text-red-500 hover:text-red-600"
-              >
-                Logout
-              </button>
-            </div>
-          )}
+        <button
+          onClick={() => {
+            setIsUserMenuOpen(false);
+            handleLogout();
+          }}
+          className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-gray-100"
+        >
+          Logout
+        </button>
+      </div>
+    )}
+  </div>
+)
+            
+          }
 
           {/* Mobile menu button */}
           <button
