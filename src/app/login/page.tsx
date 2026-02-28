@@ -11,6 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { ArrowLeft } from "lucide-react";
 import { FaArrowRight, FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa";
 import Image from "next/image";
+import type { AxiosError } from "axios";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,9 +71,11 @@ export default function LoginPage() {
       } else {
         toast.error(response.data.message || "An error occurred during login.");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message?: string }>;
+
       toast.error(
-        error.response?.data?.message || "An error occurred during login.",
+        err.response?.data?.message || "An error occurred during login.",
       );
     } finally {
       setIsLoading(false);
