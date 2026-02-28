@@ -1,4 +1,6 @@
 // app/page.tsx
+"use client";
+
 import Sidebar from "@/components/adminDashboard/Sidebar";
 import Header from "@/components/adminDashboard/Header";
 import StatsCards from "@/components/adminDashboard/StatsCards";
@@ -9,7 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 
 export default function Home() {
-  const { loading } = useAuth({ role: "admin" });
+  const { loading } = useAuth({ allowedRoles: ["admin", "super-admin"]});
 
   if (loading) {
     return (

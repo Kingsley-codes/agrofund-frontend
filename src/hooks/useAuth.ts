@@ -1,28 +1,34 @@
-// hooks/useAuth.ts
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// src/hooks/useAuth.ts
+"use client";
 
-export function useAuth({ role }: { role: "admin" | "user" }) {
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+type Role = "user" | "admin" | "super-admin";
+
+export function useAuth({ allowedRoles }: { allowedRoles: Role[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch(
-          role === "admin" ? "/api/admin/me" : "/api/user/me",
-          { credentials: "include" }
-        );
-        if (!res.ok) throw new Error("Unauthorized");
-      } catch {
-        router.replace(role === "admin" ? "/admin/login" : "/login");
-      } finally {
-        setLoading(false);
+    const checkAuth = () => {
+      const storedData = localStorage.getItem("user") || localStorage.getItem("admin");
+      const parsed = storedData ? JSON.parse(storedData) : null;
+
+      if (!parsed || !allowedRoles.includes(parsed.role)) {
+        if (allowedRoles.includes("super-admin") || allowedRoles.includes("admin")) {
+          router.replace("/admin/login");
+        } else {
+          router.replace("/login");
+        }
       }
+
+      // Schedule setLoading after effect to avoid synchronous state update
+      setTimeout(() => setLoading(false), 0);
     };
 
     checkAuth();
-  }, [role, router]);
+  }, [allowedRoles, router]);
 
   return { loading };
 }
