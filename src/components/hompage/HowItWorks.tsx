@@ -1,3 +1,4 @@
+
 import { Step } from "@/lib";
 import { FaSearch, FaRegUser, FaWallet } from "react-icons/fa";
 
@@ -46,11 +47,12 @@ export default function HowItWorks() {
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/40 text-gray-200 hover:text-white hover:border-0 group-hover:bg-primary transition-colors">
                 <span className="text-2xl">{step.icon}</span>
               </div>
+
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                <h3 className="text-xl font-bold text-gray-800">
                   {step.title}
                 </h3>
-                <p className="text-sm text-gray-800 dark:text-gray-400">
+                <p className="text-sm text-gray-800">
                   {step.description}
                 </p>
               </div>

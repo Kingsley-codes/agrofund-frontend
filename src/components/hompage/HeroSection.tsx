@@ -3,8 +3,6 @@
 
 import { useState, useEffect } from "react";
 import {
-  FaChevronLeft,
-  FaChevronRight,
   FaCheckCircle,
   FaChartLine,
   FaCalendarAlt,
@@ -14,12 +12,16 @@ import {
   FaUserCheck,
   FaBoxOpen,
 } from "react-icons/fa";
+import { BsTransparency } from "react-icons/bs";
+import {IconType} from "react-icons";
+
+
 
 // Type definitions
 interface ButtonProps {
   text: string;
   primary: boolean;
-  icon?: React.ComponentType<any>;
+  icon?: IconType;
 }
 
 interface StatProps {
@@ -29,7 +31,7 @@ interface StatProps {
 }
 
 interface StatCardProps {
-  icon: React.ComponentType<any>;
+  icon: IconType;
   title: string;
   value: string;
   trend?: string;
@@ -39,7 +41,7 @@ interface StatCardProps {
 }
 
 interface BadgeProps {
-  icon?: React.ComponentType<any>;
+  icon?: IconType;
   text: string;
   color?: string;
   animate?: boolean;
@@ -77,6 +79,7 @@ const slides: Slide[] = [
     badge: {
       icon: FaShieldAlt,
       text: "Secured & Verified Farm Projects",
+      animate: true,
     },
     stats: [
       { value: "5,000+", label: "Active Farmers" },
@@ -92,12 +95,13 @@ const slides: Slide[] = [
     id: 2,
     title: "Your Investment Goes Directly to the Farm",
     subtitle:
-      "Your funds are used to supply farmers with seeds, fertilisers, equipment and inputs — not cash handouts — ensuring every naira is spent on real production.",
+      "Your funds are used to supply farmers with seeds, fertilizers, equipment and inputs — not cash handouts — ensuring every naira is spent on real production.",
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213423/mptkzxaetnjot7uhfxlv.png",
     badge: {
       icon: FaUserCheck,
       text: "Ownership Tier",
+      animate: true,
     },
     stats: [
       { value: "15,000+", label: "Active Acreage", trend: "+12%" },
@@ -115,7 +119,9 @@ const slides: Slide[] = [
     bgImage:
       "https://res.cloudinary.com/dbeyl29fl/image/upload/v1768213779/mnpfq3idjgfrve9grtyw.png",
     badge: {
+      icon: BsTransparency,
       text: "Transparency",
+      animate: true,
     },
     statsCards: [
       {
@@ -144,6 +150,7 @@ const slides: Slide[] = [
       icon: FaUsers,
       text: "Social Impact Driven",
       color: "bg-[#D96C3A]",
+      animate: true,
     },
     stats: [
       { value: "200+", label: "Local Producers" },
@@ -190,13 +197,6 @@ export default function HeroSlideshow() {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -358,42 +358,6 @@ export default function HeroSlideshow() {
         </div>
       </div>
 
-      {/* Slide Indicators
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4">
-        <button
-          onClick={prevSlide}
-          onMouseEnter={() => setIsAutoPlaying(false)}
-          onMouseLeave={() => setIsAutoPlaying(true)}
-          className="flex items-center justify-center w-8 h-8 rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
-        >
-          <FaChevronLeft className="w-5 h-5" />
-        </button>
-
-        <div className="flex gap-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              onMouseEnter={() => setIsAutoPlaying(false)}
-              onMouseLeave={() => setIsAutoPlaying(true)}
-              className={`transition-all duration-300 ${
-                index === currentSlide
-                  ? "w-8 h-2 rounded-full bg-[#1a6b41] shadow-[0_0_12px_rgba(26,107,65,0.8)]"
-                  : "w-2 h-2 rounded-full bg-white/30 hover:bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-
-        <button
-          onClick={nextSlide}
-          onMouseEnter={() => setIsAutoPlaying(false)}
-          onMouseLeave={() => setIsAutoPlaying(true)}
-          className="flex items-center justify-center w-8 h-8 rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
-        >
-          <FaChevronRight className="w-5 h-5" />
-        </button>
-      </div> */}
     </div>
   );
 }

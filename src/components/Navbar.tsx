@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { IoMdMenu } from "react-icons/io";
-import { FaUserCircle, FaTachometerAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaUserCircle, FaHome, FaSignOutAlt } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,8 @@ import axios from "axios";
 
 type NavbarUser = {
   id?: string;
-  email?: string;
+  firstName?: string;
+  lastName?: string;
   avatar?: string;
 };
 
@@ -139,10 +140,10 @@ export default function Navbar() {
               {isDropdownOpen && (
                 <div className="absolute right-6 top-18 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   {/* User info header */}
-                  {user.email && (
+                  {user.firstName && (
                     <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                       <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Signed in as</p>
-                      <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">{user.email}</p>
+                      <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">{user.firstName} {user.lastName}</p>
                     </div>
                   )}
 
@@ -153,7 +154,7 @@ export default function Navbar() {
                       onClick={() => setIsDropdownOpen(false)}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
                     >
-                      <FaTachometerAlt className="text-base text-primary/70" />
+                      <FaHome className="text-base text-primary/70" />
                       Dashboard
                     </Link>
 
@@ -161,7 +162,7 @@ export default function Navbar() {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors"
                     >
                       <FaSignOutAlt className="text-base" />
                       Log out
@@ -225,14 +226,14 @@ export default function Navbar() {
                 ) : (
                   <>
                     {/* Mobile user info */}
-                    {user.email && (
+                    {user.firstName && (
                       <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-200">
                         {user?.avatar ? (
                           <Image src={user.avatar} alt="User avatar" width={36} height={36} className="rounded-full object-cover" />
                         ) : (
                           <FaUserCircle className="text-3xl text-primary shrink-0" />
                         )}
-                        <p className="text-sm font-medium text-gray-600 truncate">{user.email}</p>
+                        <p className="text-sm font-medium text-gray-600 truncate">{user.firstName} {user.lastName}</p>
                       </div>
                     )}
 
@@ -241,7 +242,7 @@ export default function Navbar() {
                       onClick={closeMenu}
                       className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary/10 text-base font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
                     >
-                      <FaTachometerAlt />
+                      <FaHome />
                       Dashboard
                     </Link>
                     <button
