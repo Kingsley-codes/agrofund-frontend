@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
@@ -70,9 +70,11 @@ export default function LoginPage() {
       } else {
         toast.error(response.data.message || "An error occurred during login.");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+          const err = error as AxiosError<{ message?: string }>;
+    
       toast.error(
-        error.response?.data?.message || "An error occurred during login.",
+        err.response?.data?.message || "An error occurred during login.",
       );
     } finally {
       setIsLoading(false);

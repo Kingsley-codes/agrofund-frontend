@@ -5,8 +5,20 @@ import StatsCards from "@/components/adminDashboard/StatsCards";
 import InvestmentChart from "@/components/adminDashboard/InvestmentChart";
 import PortfolioMix from "@/components/adminDashboard/PortfolioMix";
 import RecentTransactions from "@/components/adminDashboard/RecentTransactions";
+import { useAuth } from "@/hooks/useAuth";
+
 
 export default function Home() {
+  const { loading } = useAuth({ role: "admin" });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen w-full bg-background-light dark:bg-background-dark">
       <Sidebar />
