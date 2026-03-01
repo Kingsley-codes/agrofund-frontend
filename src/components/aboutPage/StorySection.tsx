@@ -1,7 +1,7 @@
 "use client";
 
-import { FaSeedling, FaQuoteLeft } from "react-icons/fa";
-import Image from "next/image";
+import { FaQuoteLeft } from "react-icons/fa";
+import { CldImage } from "next-cloudinary";
 
 
 export default function StorySection() {
@@ -9,15 +9,16 @@ export default function StorySection() {
     <section className="bg-white py-24 px-6 lg:px-20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center">
         <div className="w-full md:w-1/2">
-          {/* <Image
-            src="https://res.cloudinary.com/dbeyl29fl/image/upload/v1772313751/vymffrut2yhhjlqxjpsh.png"
+          <CldImage
+            src="vymffrut2yhhjlqxjpsh"
             alt="Nigerian farmer smiling"
-            fill
-            className="rounded-md shadow-md w-full h-125 object-cover"
-          /> */}
-        </div>
+            width={600}
+            height={400}
+            className="w-full h-auto rounded-xl shadow-gray-800 shadow-2xl object-cover"
+          />
+</div>
         <div className="w-full md:w-1/2">
-          <h2 className="text-primary text-4xl font-black mb-8">Our Story</h2>
+          <h2 className="text-primary text-4xl font-semibold mb-8">Our Story</h2>
           <div className="space-y-6 text-slate-700 leading-relaxed">
             <p>
               What started as a simple investment platform in Lagos has blossomed into a full-scale agricultural venture. Many Nigerians wanted to invest in agriculture but lacked time and expertise.

@@ -2,16 +2,16 @@
 
 export default function CTASection() {
   return (
-    <section className="py-24 px-6 lg:px-20 bg-primary text-white overflow-hidden relative">
+    <section className="py-24 px-6 lg:px-20 bg-white text-gray-800 overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
         <div className="max-w-2xl text-center md:text-left">
-          <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight">Ready to become a Remote Farmer?</h2>
-          <p className="text-xl opacity-90 mb-8">Join thousands of Nigerians growing wealth while securing our nation's food future.</p>
+          <h2 className="text-4xl md:text-5xl font-semibold text-primary mb-6 leading-tight">Ready to become a Remote Farmer?</h2>
+          <p className="text-xl opacity-90 mb-8">Join thousands of Nigerians growing wealth while securing our nation&apos;s food future.</p>
           <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-            <button className="bg-white text-primary px-8 py-4 rounded-md font-black text-lg hover:bg-background-light transition-colors shadow-md">
+            <button className="bg-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-dark transition-colors shadow-md">
               Browse Available Farms
             </button>
-            <button className="border-2 border-white/30 text-white px-8 py-4 rounded-md font-black text-lg hover:bg-white/10 transition-colors">
+            <button className="border-2 border-primary text-primary px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary/10 transition-colors">
               Contact Us
             </button>
           </div>
