@@ -1,8 +1,8 @@
-import Sidebar from "./Sidebar";
-import TopMobileHeader from "./TopMobileHeader";
-import StatsGrid from "./StatsGrid";
-import YieldChart from "./YieldChart";
-import ActiveInvestments from "./ActiveInvestments";
+import Sidebar from "@/components/dashboard/Sidebar";
+import TopMobileHeader from "@/components/dashboard/TopMobileHeader";
+import StatsGrid from "@/components/dashboard/StatsGrid";
+import YieldChart from "@/components/dashboard/YieldChart";
+import ActiveInvestments from "@/components/dashboard/ActiveInvestments";
 
 export default function DashboardLayout() {
   return (
