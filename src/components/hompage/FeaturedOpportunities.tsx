@@ -31,7 +31,7 @@ export default async function FeaturedOpportunities() {
   }
 
   return (
-    <section className="bg-[#f0fdf4] py-16 dark:bg-[#0f1a0c] md:py-24">
+    <section className="bg-gray-100 py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex items-center justify-between">
           <h2 className="text-2xl font-bold tracking-tight text-text-main dark:text-white md:text-3xl">

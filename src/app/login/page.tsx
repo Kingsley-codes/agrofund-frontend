@@ -83,7 +83,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row bg-background-light dark:bg-background-dark">
+    <div className="relative min-h-screen flex flex-col lg:flex-row bg-gray-50">
       {/* Back to Home Button */}
       <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
         <motion.div

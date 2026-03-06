@@ -72,7 +72,7 @@ export default function OpportunitiesPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <div className="relative bg-gray-100 flex min-h-screen w-full flex-col overflow-x-hidden">
       <main className="flex-1">
         <StatsBanner totalCount={totalCount} />
 

@@ -1,4 +1,3 @@
-
 import { Step } from "@/lib";
 import { FaSearch, FaRegUser, FaWallet } from "react-icons/fa";
 
@@ -25,7 +24,7 @@ const steps: Step[] = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 bg-gray-50 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 mb-12 text-center md:text-left">
           <h2 className="text-2xl font-bold text-gray-800 text-center md:text-4xl">
@@ -52,9 +51,7 @@ export default function HowItWorks() {
                 <h3 className="text-xl font-bold text-gray-800">
                   {step.title}
                 </h3>
-                <p className="text-sm text-gray-800">
-                  {step.description}
-                </p>
+                <p className="text-sm text-gray-800">{step.description}</p>
               </div>
             </div>
           ))}

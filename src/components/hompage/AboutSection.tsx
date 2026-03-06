@@ -5,7 +5,7 @@ import { CldImage } from "next-cloudinary";
 
 export default function About() {
   return (
-    <section className="py-24 bg-primary/5">
+    <section className="py-24 bg-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1">
@@ -24,7 +24,7 @@ export default function About() {
             <h2 className="text-sm font-bold tracking-widest text-primary uppercase mb-4">
               About Grow Africa
             </h2>
-            <h3 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
+            <h3 className="text-3xl md:text-4xl  text-gray-800 font-bold mb-6 leading-tight">
               Bridging the Gap Between Investors and Sustainable Farming
             </h3>
             <p className="text-slate-600 mb-6 leading-relaxed">
@@ -40,7 +40,7 @@ export default function About() {
               accountability, productivity and long-term sustainability.
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-4 text-gray-800">
               <div className="flex gap-4">
                 <BiCheckCircle className="text-primary text-2xl shrink-0" />
                 <p className="font-medium italic">

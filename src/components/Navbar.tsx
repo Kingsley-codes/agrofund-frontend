@@ -31,7 +31,10 @@ export default function Navbar() {
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
@@ -46,7 +49,11 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${backendUrl}/api/auth/logout`, {}, { withCredentials: true });
+      await axios.post(
+        `${backendUrl}/api/auth/logout`,
+        {},
+        { withCredentials: true },
+      );
     } catch (err) {
       console.error("Logout failed", err);
     } finally {
@@ -70,7 +77,13 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex items-center h-full pl-4 gap-2">
           <Link href="/" className="h-full flex items-center">
-            <Image src="/grow-logo.svg" alt="Grow logo" width={178} height={178} priority />
+            <Image
+              src="/grow-logo.svg"
+              alt="Grow logo"
+              width={178}
+              height={178}
+              priority
+            />
           </Link>
         </div>
 
@@ -79,7 +92,7 @@ export default function Navbar() {
           {navLinks.map((link) => (
             <Link
               key={link.label}
-              className="text-lg hover:text-primary font-semibold transition-colors"
+              className="text-lg hover:text-primary text-gray-800  font-semibold transition-colors"
               href={link.href}
             >
               {link.label}
@@ -132,7 +145,12 @@ export default function Navbar() {
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
 
@@ -142,8 +160,12 @@ export default function Navbar() {
                   {/* User info header */}
                   {user.firstName && (
                     <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">Signed in as</p>
-                      <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">{user.firstName} {user.lastName}</p>
+                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+                        Signed in as
+                      </p>
+                      <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">
+                        {user.firstName} {user.lastName}
+                      </p>
                     </div>
                   )}
 
@@ -180,7 +202,9 @@ export default function Navbar() {
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? (
-              <span className="text-primary w-10 h-10 font-semibold text-3xl flex items-center justify-center">X</span>
+              <span className="text-primary w-10 h-10 font-semibold text-3xl flex items-center justify-center">
+                X
+              </span>
             ) : (
               <IoMdMenu className="w-10 h-10 text-primary" />
             )}
@@ -229,11 +253,19 @@ export default function Navbar() {
                     {user.firstName && (
                       <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-200">
                         {user?.avatar ? (
-                          <Image src={user.avatar} alt="User avatar" width={36} height={36} className="rounded-full object-cover" />
+                          <Image
+                            src={user.avatar}
+                            alt="User avatar"
+                            width={36}
+                            height={36}
+                            className="rounded-full object-cover"
+                          />
                         ) : (
                           <FaUserCircle className="text-3xl text-primary shrink-0" />
                         )}
-                        <p className="text-sm font-medium text-gray-600 truncate">{user.firstName} {user.lastName}</p>
+                        <p className="text-sm font-medium text-gray-600 truncate">
+                          {user.firstName} {user.lastName}
+                        </p>
                       </div>
                     )}
 
@@ -246,7 +278,10 @@ export default function Navbar() {
                       Dashboard
                     </Link>
                     <button
-                      onClick={() => { handleLogout(); closeMenu(); }}
+                      onClick={() => {
+                        handleLogout();
+                        closeMenu();
+                      }}
                       className="flex h-12 items-center justify-center gap-2 rounded-xl bg-red-50 text-base font-semibold text-red-600 hover:bg-red-100 transition-colors"
                     >
                       <FaSignOutAlt />
