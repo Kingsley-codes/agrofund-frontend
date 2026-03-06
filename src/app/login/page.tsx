@@ -63,7 +63,11 @@ export default function LoginPage() {
       if (response.status === 200 && response.data.status === "success") {
         toast.success(response.data.message || "Login successful!");
 
-        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        localStorage.removeItem("admin"); // clear any stale admin session
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ ...response.data.data.user, role: "user" }),
+        );
 
         setTimeout(() => {
           router.push("/dashboard");

@@ -62,7 +62,11 @@ export default function LoginPage() {
       if (response.status === 200 && response.data.status === "success") {
         toast.success(response.data.message || "Login successful!");
 
-        localStorage.setItem("admin", JSON.stringify(response.data.data.admin));
+        localStorage.removeItem("user"); // clear any stale user session
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({ ...response.data.data.user, role: "admin" }),
+        );
 
         setTimeout(() => {
           router.push("/admin/dashboard");
@@ -71,8 +75,8 @@ export default function LoginPage() {
         toast.error(response.data.message || "An error occurred during login.");
       }
     } catch (error: unknown) {
-          const err = error as AxiosError<{ message?: string }>;
-    
+      const err = error as AxiosError<{ message?: string }>;
+
       toast.error(
         err.response?.data?.message || "An error occurred during login.",
       );
@@ -82,7 +86,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col lg:flex-row bg-background-light dark:bg-background-dark">
+    <div className="relative min-h-screen flex flex-col lg:flex-row bg-gray-50">
       {/* Back to Home Button */}
       <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
         <motion.div
@@ -91,7 +95,7 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 md:text-white hover:text-lime-400 transition-colors font-medium text-sm"
+            className="inline-flex items-center text-gray-600 lg:text-white hover:text-lime-400 transition-colors font-medium text-sm"
           >
             <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-2" />
             Back to Home
@@ -151,7 +155,7 @@ export default function LoginPage() {
           <div className="bg-gray-100  rounded-2xl border border-gray-200 p-6 md:p-8 transition-colors duration-200">
             {/* Header */}
             <div className="mb-6">
-              <h1 className="md:text-2xl text-xl font-semibold text-text-main-light dark:text-text-main-dark text-center mb-2">
+              <h1 className="md:text-2xl text-xl font-semibold text-gray-800 text-center mb-2">
                 Welcome Back
               </h1>
               <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 text-center">
@@ -162,7 +166,7 @@ export default function LoginPage() {
             {/* Google Login Button */}
             <button
               type="button"
-              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm mb-6"
+              className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:cursor-pointer transition-colors shadow-sm mb-6"
             >
               <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
               <span>Continue with Google</span>
@@ -197,7 +201,7 @@ export default function LoginPage() {
                   placeholder="name@company.com"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                  className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-4 text-sm text-slate-900 placeholder-slate-400 transition-all"
                   required
                 />
               </div>
@@ -218,13 +222,13 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-4 pr-10 text-sm text-slate-900 placeholder-slate-400 transition-all"
                     required
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </button>
@@ -235,7 +239,7 @@ export default function LoginPage() {
               <div className="flex justify-end">
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-primary dark:text-text-main-dark hover:text-primary-dark dark:hover:text-primary transition-colors flex items-center gap-1 group"
+                  className="text-xs text-primary hover:text-primary-dark transition-colors flex items-center gap-1 group"
                 >
                   Forgot Password?
                   <FaArrowRight className="text-xs transition-transform group-hover:translate-x-1" />
@@ -248,8 +252,8 @@ export default function LoginPage() {
                 disabled={!isFormValid || isLoading}
                 className={`mt-1 md:mt-2 flex w-full items-center justify-center rounded-xl h-10 md:h-12 px-4 text-base font-semibold transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                   isFormValid && !isLoading
-                    ? "bg-primary hover:bg-primary-dark text-white cursor-pointer focus:ring-primary"
-                    : "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                    ? "bg-primary hover:bg-primary-dark text-white cursor-pointer"
+                    : "bg-slate-300 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                 }`}
               >
                 {isLoading ? (
@@ -262,19 +266,6 @@ export default function LoginPage() {
                 )}
               </button>
             </form>
-
-            {/* Sign Up Link */}
-            <div className="mt-6 text-center">
-              <p className="text-xs">
-                Don&apos;t have an account?{" "}
-                <Link
-                  href="/signup"
-                  className="text-primary font-semibold hover:text-primary-dark transition-colors"
-                >
-                  Sign up
-                </Link>
-              </p>
-            </div>
           </div>
         </div>
       </div>
