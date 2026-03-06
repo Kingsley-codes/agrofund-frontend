@@ -1,3 +1,5 @@
+"use client";
+
 import Sidebar from "@/components/dashboard/Sidebar";
 import TopMobileHeader from "@/components/dashboard/TopMobileHeader";
 import StatsGrid from "@/components/dashboard/StatsGrid";
