@@ -18,13 +18,17 @@ export default function YieldChart() {
       </div>
 
       {/* Your SVG exactly reused */}
-      <div className="relative w-full h-[250px] overflow-hidden">
+      <div className="relative w-full h-62.5 overflow-hidden">
         {/* paste your svg here unchanged */}
       </div>
 
       <div className="flex justify-between text-xs font-bold text-gray-400 mt-4 px-2">
-        <span>Jan</span><span>Feb</span><span>Mar</span>
-        <span>Apr</span><span>May</span><span>Jun</span>
+        <span>Jan</span>
+        <span>Feb</span>
+        <span>Mar</span>
+        <span>Apr</span>
+        <span>May</span>
+        <span>Jun</span>
       </div>
     </div>
   );
