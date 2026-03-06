@@ -3,10 +3,21 @@ import TopMobileHeader from "@/components/dashboard/TopMobileHeader";
 import StatsGrid from "@/components/dashboard/StatsGrid";
 import YieldChart from "@/components/dashboard/YieldChart";
 import ActiveInvestments from "@/components/dashboard/ActiveInvestments";
+import { useAuth } from "@/hooks/useAuth";
 
-export default function DashboardLayout() {
+export default function DashboardPage() {
+  const { loading } = useAuth({ allowedRoles: ["user"] });
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen w-full overflow-hidden">
+    <div className="flex h-screen bg-gray-50 w-full overflow-hidden">
       <Sidebar />
 
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">

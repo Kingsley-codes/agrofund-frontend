@@ -195,7 +195,7 @@ export default function SignUpPage() {
   ];
 
   return (
-    <div className="relative flex min-h-screen w-full overflow-hidden">
+    <div className="relative flex min-h-screen w-full bg-gray-50 overflow-hidden">
       <div className="absolute top-2 left-2 md:top-6 md:left-6 z-20">
         {/* Back to Home */}
         <motion.div
@@ -205,7 +205,7 @@ export default function SignUpPage() {
         >
           <Link
             href="/"
-            className="inline-flex items-center text-gray-600 md:text-white hover:text-lime-400 transition-colors font-medium text-sm md:text-base"
+            className="inline-flex items-center text-gray-600 lg:text-white hover:text-lime-400 transition-colors font-medium text-sm md:text-base"
           >
             <ArrowLeft className="w-3 h-3 md:w-4 md:h-4 mr-2" />
             Back to Home
@@ -298,10 +298,10 @@ export default function SignUpPage() {
             <div className="w-full max-w-md flex flex-col gap-3">
               {/* Heading */}
               <div className="text-center">
-                <h2 className="text-xl text-center md:text-2xl font-semibold text-slate-900 dark:text-white tracking-tight mb-1 md:mb-2">
+                <h2 className="text-xl text-center md:text-2xl font-semibold text-slate-900 tracking-tight mb-1 md:mb-2">
                   {formStep === 1 ? "Create your account" : "Set your password"}
                 </h2>
-                <p className="text-xs text-center md:text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-center md:text-sm text-slate-500">
                   {formStep === 1
                     ? "Begin your journey as a bonafide farmer with Agrofund Hub."
                     : "Secure your account with a strong password."}
@@ -315,23 +315,21 @@ export default function SignUpPage() {
                     className={`flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full ${
                       formStep === 1
                         ? "bg-primary text-white"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-400"
+                        : "bg-slate-200 text-slate-400"
                     }`}
                   >
                     1
                   </div>
                   <div
                     className={`w-10 md:w-12 h-1 mx-2 ${
-                      formStep === 2
-                        ? "bg-primary"
-                        : "bg-slate-200 dark:bg-slate-700"
+                      formStep === 2 ? "bg-primary" : "bg-slate-200"
                     }`}
                   ></div>
                   <div
                     className={`flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full ${
                       formStep === 2
                         ? "bg-primary text-white"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-400"
+                        : "bg-slate-200 text-slate-400"
                     }`}
                   >
                     2
@@ -344,7 +342,7 @@ export default function SignUpPage() {
                   {/* Google Auth */}
                   <button
                     type="button"
-                    className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 md:p-3.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
+                    className="flex w-full items-center justify-center gap-3 rounded-xl hover:cursor-pointer bg-white border border-slate-200 p-3 md:p-3.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
                   >
                     <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
                     <span>Sign up with Google</span>
@@ -374,7 +372,7 @@ export default function SignUpPage() {
                       <div className="flex flex-col gap-1 md:gap-1.5">
                         <label
                           htmlFor="firstName"
-                          className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300"
+                          className="text-xs md:text-sm font-semibold text-slate-700"
                         >
                           First Name
                         </label>
@@ -385,7 +383,7 @@ export default function SignUpPage() {
                           placeholder="John"
                           value={formData.firstName}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-3 md:px-4 text-sm text-slate-900 placeholder-slate-400 transition-all"
                           required
                         />
                       </div>
@@ -394,7 +392,7 @@ export default function SignUpPage() {
                       <div className="flex flex-col gap-1 md:gap-1.5">
                         <label
                           htmlFor="lastName"
-                          className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300"
+                          className="text-xs md:text-sm font-semibold text-slate-700"
                         >
                           Last Name
                         </label>
@@ -405,7 +403,7 @@ export default function SignUpPage() {
                           placeholder="Doe"
                           value={formData.lastName}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-3 md:px-4 text-sm text-slate-900 placeholder-slate-400 transition-all"
                           required
                         />
                       </div>
@@ -415,7 +413,7 @@ export default function SignUpPage() {
                     <div className="flex flex-col gap-1 md:gap-1.5">
                       <label
                         htmlFor="email"
-                        className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300"
+                        className="text-xs md:text-sm font-semibold text-slate-700"
                       >
                         Email Address
                       </label>
@@ -426,7 +424,7 @@ export default function SignUpPage() {
                         placeholder="name@company.com"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5 px-3 md:px-4 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                        className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-3 md:px-4 text-sm text-slate-900 placeholder-slate-400 transition-all"
                         required
                       />
                     </div>
@@ -446,7 +444,7 @@ export default function SignUpPage() {
                     <div className="flex flex-col gap-1 md:gap-1.5">
                       <label
                         htmlFor="password"
-                        className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300"
+                        className="text-xs md:text-sm font-semibold text-slate-700"
                       >
                         Password
                       </label>
@@ -458,13 +456,13 @@ export default function SignUpPage() {
                           placeholder="Create a password"
                           value={formData.password}
                           onChange={handleInputChange}
-                          className="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-primary focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-green-500/20 py-2.5px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all"
+                          className="w-full rounded-xl bg-slate-50 border border-slate-200 focus:border-primary focus:bg-white py-2.5 px-3 md:px-4 text-sm text-slate-900 placeholder-slate-400 transition-all"
                           required
                         />
                         <button
                           type="button"
                           onClick={togglePasswordVisibility}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                           {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </button>
@@ -484,12 +482,12 @@ export default function SignUpPage() {
                                     : index === 2
                                       ? "bg-yellow-400"
                                       : "bg-green-400"
-                                : "bg-slate-200 dark:bg-slate-700"
+                                : "bg-slate-200"
                             }`}
                           />
                         ))}
                       </div>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      <p className="text-xs text-slate-500 mt-1">
                         {!isPasswordValid(formData.password) ? (
                           <span className="text-red-500">
                             Password must contain at least 8 characters, one
@@ -506,7 +504,7 @@ export default function SignUpPage() {
                     <div className="flex flex-col gap-1 md:gap-1.5">
                       <label
                         htmlFor="confirmPassword"
-                        className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300"
+                        className="text-xs md:text-sm font-semibold text-slate-700"
                       >
                         Confirm Password
                       </label>
@@ -518,17 +516,17 @@ export default function SignUpPage() {
                           placeholder="Confirm your password"
                           value={formData.confirmPassword}
                           onChange={handleInputChange}
-                          className={`w-full rounded-xl bg-slate-100 dark:bg-slate-800 border ${
+                          className={`w-full rounded-xl bg-slate-100 border ${
                             confirmPasswordError && formData.confirmPassword
-                              ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
-                              : "border-slate-200 dark:border-slate-700 focus:border-primary focus:ring-2 focus:ring-green-500/20"
-                          } py-2.5 px-3 md:px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all`}
+                              ? "border-red-500 focus:border-red-500"
+                              : "border-slate-200 focus:border-primary"
+                          } py-2.5 px-3 md:px-4 pr-10 text-sm text-slate-900 placeholder-slate-400 transition-all`}
                           required
                         />
                         <button
                           type="button"
                           onClick={toggleConfirmPasswordVisibility}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                         >
                           {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                         </button>
@@ -549,26 +547,26 @@ export default function SignUpPage() {
                           type="checkbox"
                           checked={formData.terms}
                           onChange={handleInputChange}
-                          className="h-4 w-4 md:h-5 md:w-5 rounded border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-green-500 focus:ring-green-500/20 focus:ring-2"
+                          className="h-4 w-4 md:h-5 md:w-5 rounded border-slate-300 bg-slate-100 text-green-500"
                           required
                         />
                       </div>
                       <div className="text-xs md:text-sm leading-5 md:leading-6">
                         <label
                           htmlFor="terms"
-                          className="text-slate-900 dark:text-slate-300 font-medium"
+                          className="text-slate-900 font-medium"
                         >
                           I agree to the{" "}
                           <Link
                             href="/terms"
-                            className="text-primary dark:text-white font-bold hover:text-primary-dark transition-colors"
+                            className="text-primary font-bold hover:text-primary-dark transition-colors"
                           >
                             Terms of Service
                           </Link>{" "}
                           and{" "}
                           <Link
                             href="/privacy"
-                            className="text-primary dark:text-white font-bold hover:text-primary-dark transition-colors"
+                            className="text-primary font-bold hover:text-primary-dark transition-colors"
                           >
                             Privacy Policy
                           </Link>
@@ -610,16 +608,16 @@ export default function SignUpPage() {
                     type="button"
                     onClick={() => setFormStep(1)}
                     disabled={isLoading}
-                    className="text-xs md:text-sm text-primary dark:text-slate-400 hover:text-primary-dark mb-1 md:mb-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="text-xs md:text-sm text-primary hover:text-primary-dark mb-1 md:mb-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     ← Back to personal info
                   </button>
                 )}
-                <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-xs md:text-sm text-slate-600">
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="text-primary dark:text-white font-semibold hover:text-primary-dark transition-colors"
+                    className="text-primary font-semibold hover:text-primary-dark transition-colors"
                   >
                     Log in
                   </Link>
