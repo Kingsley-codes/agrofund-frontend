@@ -1,6 +1,6 @@
 import InvestmentRow from "./InvestmentRow";
 
-const investments = [
+const staticInvestments = [
   {
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBLBi0r9hG6NiNg1z4R0aUbVlC-EUH4L2TYFeKS1kClMi1JIFI8MT_bI0EVK8jF0z4CwslsM-BLL3sBgDe8EoJPQnFR7qOdjVuq3He7QC1NVYLJcVJsAPQXB2-sXyXJvpzbQ8PMDkVmjPNxslZFj2tyqUb8xh-jD6F0oWUDZ6OXNKeQgzVkkHTSX_b9BDVcwAOWaKWjIHa5_YWOdNa56gPRlrQpHtkIe3xlg17-WG0wvkDw5J3omXWu-oCiAnXaOG_3f3qr0aq-a_0",
@@ -23,7 +23,7 @@ const investments = [
   },
 ];
 
-interface Investment {
+interface InvestmentProps {
   image: string;
   name: string;
   farm: string;
@@ -34,10 +34,12 @@ interface Investment {
 }
 
 interface InvestmentTableProps {
-  investments: Investment[];
+  investments: InvestmentProps[];
 }
 
-export default function InvestmentTable({ investments }: InvestmentTableProps) {
+export default function InvestmentTable({
+  investments = staticInvestments,
+}: InvestmentTableProps) {
   return (
     <div className="w-full overflow-hidden rounded-xl border bg-white shadow-sm">
       <table className="w-full text-left">
