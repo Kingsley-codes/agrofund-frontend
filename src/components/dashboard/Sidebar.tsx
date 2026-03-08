@@ -11,6 +11,7 @@ import {
 import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import { GrowIcon } from "@/components/GrowIcon";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 export interface UserData {
   firstName?: string;
@@ -60,10 +61,29 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
   const initials = getInitials(user);
   const displayName = getDisplayName(user);
   const profilePhoto = user?.profilePhoto;
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  // Close sidebar when clicking outside (mobile only)
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      const isMobile = window.innerWidth < 768;
+      if (
+        isMobile &&
+        isOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(e.target as Node)
+      ) {
+        onToggle();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen, onToggle]);
 
   return (
     <>
       <aside
+        ref={sidebarRef} // ← attach ref here
         className={`
           flex flex-col justify-between border-r border-gray-200 bg-gray-200 h-full
           transition-all duration-300 ease-in-out overflow-hidden
@@ -188,25 +208,6 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
           </div>
         </div>
       </aside>
-
-      {/* Mobile backdrop */}
-      {/* {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
-          onClick={onToggle}
-        />
-      )} */}
-
-      {/* Mobile toggle button — always visible, outside sidebar */}
-      {/* {!isOpen && (
-        <button
-          onClick={onToggle}
-          className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-white shadow-md text-primary"
-          aria-label="Toggle sidebar"
-        >
-          <GoSidebarCollapse size={20} />
-        </button>
-      )} */}
     </>
   );
 }
