@@ -1,3 +1,6 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FiGrid,
   FiPieChart,
@@ -5,71 +8,187 @@ import {
   FiCreditCard,
   FiSettings,
 } from "react-icons/fi";
-import { GiPlantRoots } from "react-icons/gi";
+import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
+import { GrowIcon } from "@/components/GrowIcon";
+import Image from "next/image";
 
-export default function Sidebar() {
+export interface UserData {
+  firstName?: string;
+  lastName?: string;
+  name?: string;
+  profilePhoto?: string;
+  email?: string;
+  role?: string;
+}
+
+interface SidebarProps {
+  user: UserData | null;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+const navLinks = [
+  { href: "/", label: "Dashboard", icon: FiGrid },
+  { href: "/dashboard/investments", label: "My Investments", icon: FiPieChart },
+  { href: "/opportunities", label: "New Investments", icon: FiShoppingBag },
+  { href: "/dashboard/wallet", label: "Wallet", icon: FiCreditCard },
+  { href: "/dashboard/chat", label: "Chat", icon: FiCreditCard },
+];
+
+function getInitials(user: UserData | null): string {
+  if (!user) return "?";
+  if (user.firstName && user.lastName)
+    return `${user.firstName[0]}${user.lastName[0]}`.toUpperCase();
+  if (user.name) {
+    const parts = user.name.trim().split(" ");
+    if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+    return parts[0][0].toUpperCase();
+  }
+  return "?";
+}
+
+function getDisplayName(user: UserData | null): string {
+  if (!user) return "User";
+  if (user.firstName && user.lastName)
+    return `${user.firstName} ${user.lastName[0]}.`;
+  if (user.name) return user.name;
+  return "User";
+}
+
+export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
+  const pathname = usePathname();
+  const initials = getInitials(user);
+  const displayName = getDisplayName(user);
+  const profilePhoto = user?.profilePhoto;
+
   return (
-    <aside className="hidden md:flex w-72 flex-col justify-between border-r border-gray-200 bg-card-light p-6">
-      <div className="flex flex-col gap-8">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="bg-primary/20 p-2 rounded-lg text-primary text-2xl">
-            <GiPlantRoots />
-          </div>
-
-          <div>
-            <h1 className="text-xl font-bold">Agrofund Hub</h1>
-            <p className="text-xs text-secondary-text font-medium">
-              Grow your wealth
-            </p>
-          </div>
-        </div>
-
-        {/* Nav */}
-        <nav className="flex flex-col gap-2">
-          <a className="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-black font-bold text-sm">
-            <FiGrid />
-            Dashboard
-          </a>
-
-          <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 text-sm">
-            <FiPieChart />
-            Portfolio
-          </a>
-
-          <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 text-sm">
-            <FiShoppingBag />
-            Marketplace
-          </a>
-
-          <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 text-sm">
-            <FiCreditCard />
-            Wallet
-          </a>
-        </nav>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <a className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-100 text-sm">
-          <FiSettings />
-          Settings
-        </a>
-
-        <div className="flex items-center gap-3 px-2 py-2 border-t pt-4">
+    <>
+      <aside
+        className={`
+          flex flex-col justify-between border-r border-gray-200 bg-card-light h-full
+          transition-all duration-300 ease-in-out overflow-hidden
+          fixed md:relative z-50 md:z-auto
+          ${isOpen ? "w-72 p-6 translate-x-0" : "w-0 md:w-16 -translate-x-full md:translate-x-0 p-0 md:p-3 md:items-center"}
+        `}
+      >
+        <div className={`flex flex-col ${isOpen ? "gap-8" : "gap-6"} w-full`}>
+          {/* Logo + toggle */}
           <div
-            className="h-10 w-10 rounded-full bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url(https://lh3.googleusercontent.com/aida-public/AB6AXuCntPHF6qMp6gyYvcm-Rgw8pNGMaPFbuwa2N3Lzela10HQjjDvmCw51KUm-MAoJggGZJ8uL9SmWgCk594O0Pdp0bxxpPTh_nZ-Mds7NzIc-0HjBWB9gs0NY_UIObfAep0LyCf0QyFzdaAn2OAPccUYfRqS9TbzWz4yZe40To0Ze8IFnGwLB2wbasTeUwW83YN6OO-irltA062GSvTFkXmKBm-8vfMWk6zGM1jR6bA2vQTaoJf16PtGSNo5L2M4XmlBo2L8B1NvUMHk)",
-            }}
-          />
+            className={`flex items-center ${isOpen ? "justify-between" : "justify-center"}`}
+          >
+            {isOpen ? (
+              <>
+                <Image
+                  src="/grow-logo.svg"
+                  alt="Grow logo"
+                  width={120}
+                  height={40}
+                />
+                <button
+                  onClick={onToggle}
+                  className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 shrink-0"
+                  aria-label="Collapse sidebar"
+                >
+                  <GoSidebarExpand size={20} />
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={onToggle}
+                className="group hidden md:flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 shrink-0 text-primary"
+                aria-label="Expand sidebar"
+              >
+                <span className="group-hover:hidden">
+                  <GrowIcon
+                    size={32}
+                    rayColor="currentColor"
+                    centerColor="white"
+                  />
+                </span>
+                <span className="hidden group-hover:block text-gray-500">
+                  <GoSidebarCollapse size={24} />
+                </span>
+              </button>
+            )}
+          </div>
 
-          <div>
-            <p className="text-sm font-bold">Alex M.</p>
-            <p className="text-xs text-gray-500">Investor</p>
+          {/* Nav */}
+          <nav className="flex flex-col gap-2 w-full">
+            {navLinks.map(({ href, label, icon: Icon }) => {
+              const isActive =
+                href === "/" ? pathname === "/" : pathname.startsWith(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  title={!isOpen ? label : undefined}
+                  className={`flex items-center gap-3 rounded-xl text-sm font-bold transition-colors whitespace-nowrap
+                    ${isOpen ? "px-4 py-3" : "p-3 justify-center"}
+                    ${
+                      isActive
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }
+                  `}
+                >
+                  <Icon size={18} />
+                  {isOpen && label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Bottom: settings + user */}
+        <div className="flex flex-col gap-4 w-full">
+          <Link
+            href="/settings"
+            title={!isOpen ? "Settings" : undefined}
+            className={`flex items-center gap-3 rounded-xl text-sm transition-colors whitespace-nowrap
+              ${isOpen ? "px-4 py-3" : "p-3 justify-center"}
+              ${
+                pathname === "/settings"
+                  ? "bg-primary text-white font-bold shadow-sm"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              }
+            `}
+          >
+            <FiSettings size={18} />
+            {isOpen && "Settings"}
+          </Link>
+
+          <div
+            className={`flex items-center gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
+          >
+            {profilePhoto ? (
+              <div
+                className="h-10 w-10 rounded-full bg-cover bg-center shrink-0"
+                style={{ backgroundImage: `url(${profilePhoto})` }}
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">
+                {initials}
+              </div>
+            )}
+            {isOpen && (
+              <div>
+                <p className="text-sm font-bold">{displayName}</p>
+                <p className="text-xs text-gray-500 capitalize">
+                  {user?.role ?? "Investor"}
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+
+      {/* Mobile backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={onToggle}
+        />
+      )}
+    </>
   );
 }
