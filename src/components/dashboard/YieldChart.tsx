@@ -3,14 +3,14 @@ export default function YieldChart() {
     <div className="bg-card-light rounded-xl border border-gray-100 shadow-sm p-6">
       <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
         <div>
-          <h3 className="text-lg font-bold">Yield Projection</h3>
+          <h3 className="text-lg text-gray-700 font-bold">Yield Projection</h3>
           <p className="text-sm text-gray-500">
             Estimated earnings over next 6 months
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold">$14,250</span>
+          <span className="text-2xl text-gray-700 font-bold">$14,250</span>
           <span className="text-sm font-bold text-[#078821] bg-[#eaf3e7] px-2 py-0.5 rounded">
             +15%
           </span>

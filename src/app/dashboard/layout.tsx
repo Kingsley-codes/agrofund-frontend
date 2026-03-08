@@ -21,13 +21,15 @@ export default function MainLayout({
   }, []);
 
   return (
-    <>
+    <div className="flex h-screen bg-gray-50 w-full overflow-hidden">
       <Sidebar
         user={user}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen((prev) => !prev)}
       />
-      <main>{children}</main>
-    </>
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+        {children}
+      </main>
+    </div>
   );
 }

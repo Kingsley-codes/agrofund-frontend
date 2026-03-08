@@ -47,7 +47,7 @@ export default function DashboardPage() {
               <button className="flex items-center text-gray-600 gap-2 px-5 py-2.5 rounded-lg bg-white border border-gray-200 text-sm font-bold">
                 Report
               </button>
-              <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-black text-white text-sm font-bold">
+              <button className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-bold">
                 Withdraw
               </button>
             </div>

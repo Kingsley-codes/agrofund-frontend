@@ -28,7 +28,7 @@ interface SidebarProps {
 }
 
 const navLinks = [
-  { href: "/", label: "Dashboard", icon: FiGrid },
+  { href: "/dashboard", label: "Dashboard", icon: FiGrid },
   { href: "/dashboard/investments", label: "My Investments", icon: FiPieChart },
   { href: "/opportunities", label: "New Investments", icon: FiShoppingBag },
   { href: "/dashboard/wallet", label: "Wallet", icon: FiCreditCard },
@@ -116,7 +116,9 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
           <nav className="flex flex-col gap-2 w-full">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
-                href === "/" ? pathname === "/" : pathname.startsWith(href);
+                href === "/dashboard"
+                  ? pathname === "/dashboard"
+                  : pathname.startsWith(href);
               return (
                 <Link
                   key={href}
