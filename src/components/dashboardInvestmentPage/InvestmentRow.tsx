@@ -56,7 +56,7 @@ export default function InvestmentRow({
   return (
     <>
       {/* ── Mobile card (hidden on md+) ── */}
-      <tr className="md:hidden border-b last:border-b-0">
+      <tr className="lg:hidden border-b last:border-b-0">
         <td colSpan={7} className="p-4">
           <div className="flex items-start gap-3">
             <div
@@ -93,7 +93,7 @@ export default function InvestmentRow({
       </tr>
 
       {/* ── Desktop row (hidden below md) ── */}
-      <tr className="hidden md:table-row hover:bg-gray-50 border-b">
+      <tr className="hidden lg:table-row hover:bg-gray-50 border-b">
         <td className="px-6 py-4">
           <div
             className="size-12 rounded-lg bg-cover bg-center"

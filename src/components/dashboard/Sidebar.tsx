@@ -65,10 +65,15 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
     <>
       <aside
         className={`
-          flex flex-col justify-between border-r border-gray-200 bg-card-light h-full
+          flex flex-col justify-between border-r border-gray-200 bg-gray-200 h-full
           transition-all duration-300 ease-in-out overflow-hidden
-          fixed md:relative z-50 md:z-auto
-          ${isOpen ? "w-72 p-6 translate-x-0" : "w-0 md:w-16 -translate-x-full md:translate-x-0 p-0 md:p-3 md:items-center"}
+          fixed z-50
+          md:relative md:z-auto
+
+          ${isOpen ? "translate-x-0 w-72 p-6" : "-translate-x-full w-72 p-6"}
+
+          md:translate-x-0
+          ${isOpen ? "md:w-72 md:p-6" : "md:w-16 md:p-3 md:items-center"}
         `}
       >
         <div className={`flex flex-col ${isOpen ? "gap-8" : "gap-6"} w-full`}>
@@ -190,6 +195,17 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
           className="fixed inset-0 z-40 bg-black/40 md:hidden"
           onClick={onToggle}
         />
+      )}
+
+      {/* Mobile toggle button — always visible, outside sidebar */}
+      {!isOpen && (
+        <button
+          onClick={onToggle}
+          className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-white shadow-md text-primary"
+          aria-label="Toggle sidebar"
+        >
+          <GoSidebarCollapse size={20} />
+        </button>
       )}
     </>
   );
