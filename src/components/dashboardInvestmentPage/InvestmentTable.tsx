@@ -34,7 +34,7 @@ interface InvestmentProps {
 }
 
 interface InvestmentTableProps {
-  investments: InvestmentProps[];
+  investments?: InvestmentProps[];
 }
 
 export default function InvestmentTable({

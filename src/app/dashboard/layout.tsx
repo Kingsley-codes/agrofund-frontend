@@ -1,5 +1,6 @@
 "use client";
 
+import DashboardNav from "@/components/dashboard/DashboardNav";
 import Sidebar, { UserData } from "@/components/dashboard/Sidebar";
 import { useEffect, useState } from "react";
 
@@ -28,6 +29,10 @@ export default function MainLayout({
         onToggle={() => setSidebarOpen((prev) => !prev)}
       />
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
+        <DashboardNav
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen((prev) => !prev)}
+        />
         {children}
       </main>
     </div>

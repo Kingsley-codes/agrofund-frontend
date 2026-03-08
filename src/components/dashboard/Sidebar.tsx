@@ -190,15 +190,15 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
       </aside>
 
       {/* Mobile backdrop */}
-      {isOpen && (
+      {/* {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 md:hidden"
           onClick={onToggle}
         />
-      )}
+      )} */}
 
       {/* Mobile toggle button — always visible, outside sidebar */}
-      {!isOpen && (
+      {/* {!isOpen && (
         <button
           onClick={onToggle}
           className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-white shadow-md text-primary"
@@ -206,7 +206,7 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
         >
           <GoSidebarCollapse size={20} />
         </button>
-      )}
+      )} */}
     </>
   );
 }
