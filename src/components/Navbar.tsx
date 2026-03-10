@@ -221,7 +221,7 @@ export default function Navbar() {
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
-                  className="py-3 px-4 text-base font-medium hover:text-primary hover:bg-gray-200 rounded-lg transition-colors"
+                  className="py-3 px-4 text-base font-medium text-gray-800 hover:text-primary hover:bg-gray-200 rounded-lg transition-colors"
                   href={link.href}
                   onClick={closeMenu}
                 >

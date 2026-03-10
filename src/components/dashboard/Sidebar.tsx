@@ -80,6 +80,14 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onToggle]);
 
+  // Close sidebar when route changes on mobile only
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile && isOpen) {
+      onToggle();
+    }
+  }, [pathname]);
+
   return (
     <>
       <aside

@@ -4,7 +4,7 @@ export default function WalletHeader() {
   return (
     <div className="flex justify-between items-end flex-wrap gap-4">
       <div>
-        <h2 className="text-3xl font-extrabold">My Wallet</h2>
+        <h2 className="text-3xl text-gray-800 font-extrabold">My Wallet</h2>
         <p className="text-gray-500">
           Manage your funds, track earnings, and withdraw ROI.
         </p>
