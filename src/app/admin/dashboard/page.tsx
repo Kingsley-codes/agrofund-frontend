@@ -1,7 +1,6 @@
 // app/page.tsx
 "use client";
 
-import Sidebar from "@/components/adminDashboard/Sidebar";
 import Header from "@/components/adminDashboard/Header";
 import StatsCards from "@/components/adminDashboard/StatsCards";
 import InvestmentChart from "@/components/adminDashboard/InvestmentChart";
@@ -9,9 +8,8 @@ import PortfolioMix from "@/components/adminDashboard/PortfolioMix";
 import RecentTransactions from "@/components/adminDashboard/RecentTransactions";
 import { useAuth } from "@/hooks/useAuth";
 
-
 export default function Home() {
-  const { loading } = useAuth({ allowedRoles: ["admin", "super-admin"]});
+  const { loading } = useAuth({ allowedRoles: ["admin", "super-admin"] });
 
   if (loading) {
     return (
@@ -23,8 +21,6 @@ export default function Home() {
 
   return (
     <div className="flex h-screen w-full bg-background-light dark:bg-background-dark">
-      <Sidebar />
-
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         <Header />
 

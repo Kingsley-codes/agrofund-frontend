@@ -9,6 +9,7 @@ import {
   FiSettings,
 } from "react-icons/fi";
 import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
+import { IoIosChatboxes } from "react-icons/io";
 import { GrowIcon } from "@/components/GrowIcon";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -33,7 +34,7 @@ const navLinks = [
   { href: "/dashboard/investments", label: "My Investments", icon: FiPieChart },
   { href: "/opportunities", label: "New Investments", icon: FiShoppingBag },
   { href: "/dashboard/wallet", label: "Wallet", icon: FiCreditCard },
-  { href: "/dashboard/chat", label: "Chat", icon: FiCreditCard },
+  { href: "/dashboard/chat", label: "Chat", icon: IoIosChatboxes },
 ];
 
 function getInitials(user: UserData | null): string {
@@ -80,13 +81,18 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onToggle]);
 
+  const isOpenRef = useRef(isOpen);
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
   // Close sidebar when route changes on mobile only
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    if (isMobile && isOpen) {
+    if (isMobile && isOpenRef.current) {
       onToggle();
     }
-  }, [pathname]);
+  }, [pathname, onToggle]);
 
   return (
     <>

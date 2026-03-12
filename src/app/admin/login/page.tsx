@@ -65,7 +65,7 @@ export default function LoginPage() {
         localStorage.removeItem("user"); // clear any stale user session
         localStorage.setItem(
           "admin",
-          JSON.stringify({ ...response.data.data.user, role: "admin" }),
+          JSON.stringify({ ...response.data.data.admin, role: "admin" }),
         );
 
         setTimeout(() => {

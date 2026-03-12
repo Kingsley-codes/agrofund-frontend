@@ -1,9 +1,9 @@
 "use client";
 
-import DashboardNav from "@/components/dashboard/DashboardNav";
 import DashboardFooter from "@/components/dashboard/DashboardFooter";
-import Sidebar, { UserData } from "@/components/dashboard/Sidebar";
+import AdminSidebar, { UserData } from "@/components/adminDashboard/Sidebar";
 import { useEffect, useCallback, useState } from "react";
+import AdminDashboardNav from "@/components/adminDashboard/DashboardNav";
 
 export default function DashboardLayout({
   children,
@@ -19,7 +19,7 @@ export default function DashboardLayout({
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const stored = localStorage.getItem("user");
+        const stored = localStorage.getItem("admin");
         if (stored) setUser(JSON.parse(stored));
       } catch {
         // ignore parse errors
@@ -37,13 +37,16 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-gray-50 w-full overflow-y-auto">
-      <Sidebar
+      <AdminSidebar
         user={user}
         isOpen={sidebarOpen}
         onToggle={handleSidebarToggle}
       />
       <main className="flex-1 flex flex-col h-full overflow-y-auto relative">
-        <DashboardNav isOpen={sidebarOpen} onToggle={handleSidebarToggle} />
+        <AdminDashboardNav
+          isOpen={sidebarOpen}
+          onToggle={handleSidebarToggle}
+        />
         {children}
         <DashboardFooter />
       </main>

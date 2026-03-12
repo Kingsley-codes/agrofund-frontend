@@ -11,12 +11,16 @@ export default function DashboardPage() {
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("user");
-      if (stored) setUser(JSON.parse(stored));
-    } catch {
-      // ignore parse errors
-    }
+    const fetchUser = async () => {
+      try {
+        const stored = localStorage.getItem("user");
+        if (stored) setUser(JSON.parse(stored));
+      } catch {
+        // ignore parse errors
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const firstName = user?.firstName ?? user?.name?.split(" ")[0] ?? "there";

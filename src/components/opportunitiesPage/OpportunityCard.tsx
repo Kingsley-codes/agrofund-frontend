@@ -8,8 +8,7 @@ interface OpportunityCardProps {
 }
 
 export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
-  // Log the category to see what the component is receiving
-  console.log("Category:", opportunity.category);
+  
 
   const getTypeColor = (category: string) => {
     const cat = category.trim().toLowerCase();

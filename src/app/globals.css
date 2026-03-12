@@ -8,7 +8,7 @@
   /* --primary: #5c7c1e; */
   --primary: #6b911b;
   --primary-dark: #4e6a19;
-  --terracotta: #D96C3A;
+  --terracotta: #d96c3a;
   --color-ochre: #c47a2c;
 }
 
@@ -44,8 +44,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #142210;
-    --foreground: #f0fdf4;
+    --background: #f0fdf4;
+    --foreground: #1f2937;
   }
 }
 
@@ -57,7 +57,6 @@ body {
     background-color 0.3s ease,
     color 0.3s ease;
 }
-
 
 /* Custom animations */
 @keyframes float {
@@ -126,4 +125,3 @@ body {
 .animate-slideInLeft {
   animation: slideInLeft 0.3s ease-out forwards;
 }
-

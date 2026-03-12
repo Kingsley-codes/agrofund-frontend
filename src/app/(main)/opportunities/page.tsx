@@ -42,7 +42,7 @@ export default function OpportunitiesPage() {
 
   if (loading) {
     return (
-      <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <div className="relative flex bg-gray-100 min-h-screen w-full flex-col overflow-x-hidden">
         <main className="flex flex-1 items-center justify-center">
           <div className="text-center">
             <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-primary" />

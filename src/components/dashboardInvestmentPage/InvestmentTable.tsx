@@ -41,9 +41,9 @@ export default function InvestmentTable({
   investments = staticInvestments,
 }: InvestmentTableProps) {
   return (
-    <div className="w-full rounded-xl border bg-white shadow-sm">
+    <div className="w-full rounded-xl border overflow-hidden bg-white shadow-sm">
       <table className="w-full text-left">
-        <thead className="bg-gray-50 border-b">
+        <thead className="bg-gray-50 md:border-b">
           <tr className="text-xs uppercase text-gray-500">
             <th className="hidden md:table-cell px-6 py-4">Asset</th>
             <th className="hidden md:table-cell px-6 py-4">Name</th>
