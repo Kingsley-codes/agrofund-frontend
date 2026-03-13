@@ -11,6 +11,7 @@ import {
   FiHome,
   FiDownload,
 } from "react-icons/fi";
+import Breadcrumbs from "@/components/verifyPaymentPage/Breadcrumbs";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -27,18 +28,6 @@ type PaymentDetails = {
 };
 
 // ─── Step indicator ─────────────────────────────────────────────────────────
-
-function Breadcrumbs() {
-  return (
-    <nav className="flex items-center gap-2 text-xs text-gray-400 mb-8">
-      <span className="text-gray-400">Cart</span>
-      <FiArrowRight size={10} />
-      <span className="text-gray-400">Checkout</span>
-      <FiArrowRight size={10} />
-      <span className="font-semibold text-primary">Verify Payment</span>
-    </nav>
-  );
-}
 
 // ─── Animated spinner / pulse ring ──────────────────────────────────────────
 
@@ -170,30 +159,31 @@ export default function VerifyPaymentPage() {
 
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/verify/${reference}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/payment/paystack/verify/${reference}`,
           { credentials: "include" },
         );
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message || "Verification failed");
 
-        // Adapt field names to whatever your backend returns
+        const payload = data.data; // unwrap the nested `data` key
+
         setDetails({
-          reference: data.reference ?? reference,
-          amount: data.amount,
-          produce: data.produce ?? data.produceTitle ?? "Investment",
-          units: data.units ?? 1,
-          paymentMethod: data.paymentMethod ?? "—",
-          date: data.paidAt
-            ? new Date(data.paidAt).toLocaleString()
+          reference: payload.paymentID ?? reference,
+          amount: payload.amount,
+          produce: payload.investment?.title ?? "Investment",
+          units: payload.investment?.units ?? 1,
+          paymentMethod: payload.investment?.transactionRef ? "Card" : "—",
+          date: payload.investment?.orderDate
+            ? new Date(payload.investment.orderDate).toLocaleString()
             : new Date().toLocaleString(),
-          transactionId: data.transactionId ?? data._id ?? "—",
+          transactionId: payload.investment?._id ?? "—",
         });
 
         setStatus(
-          data.status === "success"
+          data.success
             ? "success"
-            : data.status === "pending"
+            : payload.investment?.orderStatus === "pending"
               ? "pending"
               : "failed",
         );
