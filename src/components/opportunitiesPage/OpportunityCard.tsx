@@ -1,5 +1,8 @@
+"use client";
+
 import { ApiProduce } from "@/lib";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { GiGoat, GiDoubleFish, GiGrass } from "react-icons/gi";
 import { TbCurrencyNaira } from "react-icons/tb";
 
@@ -8,6 +11,8 @@ interface OpportunityCardProps {
 }
 
 export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
+  const router = useRouter();
+
   const getTypeColor = (category: string) => {
     const cat = category.trim().toLowerCase();
 
@@ -113,8 +118,15 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
           </div>
 
           <div className="flex gap-2">
-            <button className="flex-1 mt-3 rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors">
-              <Link href="/checkout">Invest Now</Link>
+            <button
+              onClick={() => {
+                router.push(
+                  `/checkout?produceId=${opportunity._id}&units=${opportunity.minimumUnit}`,
+                );
+              }}
+              className="flex-1 mt-3 rounded-lg bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition-colors"
+            >
+              Invest Now
             </button>
             <button className="flex-1 mt-3 rounded-lg bg-white border border-primary py-2.5 text-sm font-bold text-gray-700 hover:bg-primary/50 hover:text-primary transition-colors">
               <Link href={`/opportunities/${opportunity._id}`}>Details</Link>

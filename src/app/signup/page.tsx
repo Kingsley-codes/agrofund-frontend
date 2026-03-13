@@ -151,28 +151,19 @@ export default function SignUpPage() {
             "Registration completed but with an unexpected response.",
         );
       }
-    } catch (error: any) {
-      // Handle error response
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        const errorData = error.response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        const errorData = error.response?.data;
 
-        if (errorData.status === "error") {
-          // Show error toast with API error message
+        if (errorData?.status === "error") {
           toast.error(errorData.message || "Registration failed");
         } else {
-          // Generic error response
-          toast.error(errorData.message || "An unexpected error occurred");
+          toast.error(errorData?.message || "An unexpected error occurred");
         }
-      } else if (error.request) {
-        // The request was made but no response was received
-        toast.error("No response from server. Please check your connection.");
-        console.error("No response received:", error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
+      } else if (error instanceof Error) {
         toast.error(`Error: ${error.message}`);
-        console.error("Request setup error:", error.message);
+      } else {
+        toast.error("Something went wrong");
       }
     } finally {
       setIsLoading(false);

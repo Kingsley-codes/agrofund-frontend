@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { FiLock, FiCheckCircle } from "react-icons/fi";
 import { FaUniversity, FaWallet, FaCreditCard } from "react-icons/fa";
-import { CiCreditCard1 } from "react-icons/ci";
 
 type Method = "card" | "bank" | "wallet";
 
-export default function PaymentMethod() {
-  const [method, setMethod] = useState<Method>("card");
+type Props = {
+  method: Method;
+  onMethodChange: (m: Method) => void;
+  walletBalance: number | null;
+};
 
+export default function PaymentMethod({
+  method,
+  onMethodChange,
+  walletBalance,
+}: Props) {
   const box =
     "p-4 rounded-xl border-2 border-gray-200 hover:border-primary/50 transition-all h-full flex flex-col items-center justify-center gap-2 bg-background-light cursor-pointer relative";
 
@@ -22,15 +28,14 @@ export default function PaymentMethod() {
           </div>
           <h3 className="text-xl font-bold">Payment Method</h3>
         </div>
-
         <div className="flex items-center gap-2 text-gray-400 text-xs">
           <FiLock />
           SECURE SSL
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div onClick={() => setMethod("card")} className={box}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div onClick={() => onMethodChange("card")} className={box}>
           <FaCreditCard size={26} className="text-gray-600" />
           <span className="font-bold text-sm">Credit Card</span>
           {method === "card" && (
@@ -38,7 +43,7 @@ export default function PaymentMethod() {
           )}
         </div>
 
-        <div onClick={() => setMethod("bank")} className={box}>
+        <div onClick={() => onMethodChange("bank")} className={box}>
           <FaUniversity size={26} className="text-gray-600" />
           <span className="font-bold text-sm">Bank Transfer</span>
           {method === "bank" && (
@@ -46,7 +51,7 @@ export default function PaymentMethod() {
           )}
         </div>
 
-        <div onClick={() => setMethod("wallet")} className={box}>
+        <div onClick={() => onMethodChange("wallet")} className={box}>
           <FaWallet size={26} className="text-gray-600" />
           <span className="font-bold text-sm">Agro Wallet</span>
           {method === "wallet" && (
@@ -54,6 +59,19 @@ export default function PaymentMethod() {
           )}
         </div>
       </div>
+
+      {/* Wallet balance badge — shown whenever balance is available */}
+      {walletBalance !== null && (
+        <div className="flex items-center justify-between bg-primary/10 rounded-lg px-4 py-3 text-sm">
+          <div className="flex items-center gap-2 text-primary font-medium">
+            <FaWallet />
+            Agro Wallet Balance
+          </div>
+          <span className="font-bold text-primary">
+            ₦{walletBalance.toLocaleString()}
+          </span>
+        </div>
+      )}
     </section>
   );
 }

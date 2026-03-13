@@ -38,7 +38,7 @@ export default async function Page({ params }: PageProps) {
           Produce Not Found
         </h2>
         <p className="text-gray-600 mb-8">
-          Sorry, we couldn't find the produce item you're looking for.
+          Sorry, we couldn&apos;t find the produce item you&apos;re looking for.
         </p>
         <Link
           href="/opportunities"
