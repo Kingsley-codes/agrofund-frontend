@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -10,6 +9,19 @@ import PaymentMethod from "@/components/checkout/PaymentMethod";
 import TrustBadges from "@/components/checkout/TrustBadges";
 import OrderSummary from "@/components/checkout/OrderSummary";
 
+type Produce = {
+  _id: string;
+  name: string;
+  title: string;
+  price: number;
+  image1: {
+    url: string;
+    publicId: string;
+  };
+  farm?: string;
+  description?: string;
+};
+
 export default function CheckoutClient() {
   const searchParams = useSearchParams();
 
@@ -18,49 +30,48 @@ export default function CheckoutClient() {
 
   const units = Number(unitsParam || 1);
 
-  const [produce, setProduce] = useState<any>(null);
+  const [produce, setProduce] = useState<Produce | null>(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!produceId) return;
 
-useEffect(() => {
-  if (!produceId) return;
+    const fetchProduce = async () => {
+      try {
+        console.log("calling the produce API");
 
-  const fetchProduce = async () => {
-    try {
-      console.log('calling the produce API');
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/produce/${produceId}`,
+        );
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/produce/${produceId}`
-      );
+        console.log(res);
 
-      console.log(res);
+        if (!res.ok) {
+          throw new Error("Failed to fetch produce");
+        }
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch produce");
+        const data = await res.json();
+        setProduce(data.produce);
+      } catch (err) {
+        console.error("Checkout fetch error:", err);
+        setProduce(null);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      const data = await res.json();
-      setProduce(data.produce);
-    } catch (err) {
-      console.error("Checkout fetch error:", err);
-      setProduce(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchProduce();
+  }, [produceId]);
 
-  fetchProduce();
-}, [produceId]);
+  if (!produceId || loading) return null;
 
-if (!produceId || loading) return null;
-
-if (!produce) {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      Failed to load checkout data.
-    </div>
-  );
-}
+  if (!produce) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Failed to load checkout data.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background-light text-[#111b0d] font-display">

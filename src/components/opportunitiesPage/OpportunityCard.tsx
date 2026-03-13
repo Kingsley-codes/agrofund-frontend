@@ -8,8 +8,6 @@ interface OpportunityCardProps {
 }
 
 export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
-  
-
   const getTypeColor = (category: string) => {
     const cat = category.trim().toLowerCase();
 
@@ -84,7 +82,7 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
         <h3 className="text-lg font-bold text-gray-700">{opportunity.title}</h3>
         <p className="mb-3 text-sm text-gray-500">{opportunity.produceName}</p>
 
-        <div className="grid grid-cols-2 rounded-2xl px-2 gap-4 -mx-3 mb-4 py-3 border-y bg-gray-300 border-dashed border-gray-200">
+        <div className="grid grid-cols-2 rounded-2xl px-2 gap-4 -mx-3 mb-4 py-3 border-y bg-gray-200 border-dashed border-gray-200">
           <div>
             <p className="text-xs text-text-muted">ROI</p>
             <p className="text-lg font-bold text-primary">

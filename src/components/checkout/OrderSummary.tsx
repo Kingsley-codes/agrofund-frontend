@@ -1,14 +1,25 @@
-import { ApiProduce } from "@/lib";
 import { FiArrowRight, FiLock } from "react-icons/fi";
+
+type ProduceType = {
+  _id: string;
+  name: string;
+  title: string;
+  price: number;
+  image1: {
+    url: string;
+    publicId: string;
+  };
+  farm?: string;
+  description?: string;
+};
 
 export default function OrderSummary({
   produce,
   units,
 }: {
-  produce: ApiProduce | null;
+  produce: ProduceType | null;
   units: number;
 }) {
-
   if (!produce) {
     return (
       <div className="bg-white p-6 rounded-xl border">
@@ -43,14 +54,10 @@ export default function OrderSummary({
 
       <div className="p-6 space-y-4 text-sm">
         <Row label="Unit Price" value={`₦${unitPrice.toLocaleString()}`} />
-       <Divider />
+        <Divider />
         <Row label="Quantity" value={`${units} Units`} />
 
         <Divider />
-
-     
-
-
 
         <div className="flex justify-between items-end pb-2">
           <span className="text-base font-bold text-gray-800">
@@ -66,7 +73,7 @@ export default function OrderSummary({
               I agree to the Terms of Investment
             </label>
             <p>
-              By continuing, you agree to Agrofund's{" "}
+              By continuing, you agree to Agrofund&apos;s{" "}
               <a className="text-primary hover:underline" href="#">
                 Conditions of Use
               </a>{" "}

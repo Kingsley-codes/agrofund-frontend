@@ -10,7 +10,8 @@ import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 import { IoIosChatboxes } from "react-icons/io";
 import { GrowIcon } from "@/components/GrowIcon";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FiLogOut, FiChevronUp } from "react-icons/fi";
 
 export interface UserData {
   firstName?: string;
@@ -71,6 +72,25 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
   const profilePhoto = user?.profilePhoto;
   const sidebarRef = useRef<HTMLElement>(null);
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("admin");
+    window.location.href = "/";
+  };
+
   // Close sidebar when clicking outside (mobile only)
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -106,7 +126,7 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
       <aside
         ref={sidebarRef} // ← attach ref here
         className={`
-          flex flex-col justify-between border-r border-gray-200 bg-gray-200 h-full
+          flex flex-col justify-between border-r border-gray-200 bg-gray-100 h-full
           transition-all duration-300 ease-in-out overflow-hidden
           fixed z-50
           md:relative md:z-auto
@@ -124,12 +144,15 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
           >
             {isOpen ? (
               <>
-                <Image
-                  src="/grow-logo.svg"
-                  alt="Grow logo"
-                  width={120}
-                  height={40}
-                />
+                <Link href="/">
+                  <Image
+                    src="/grow-logo.svg"
+                    alt="Grow logo"
+                    width={120}
+                    height={40}
+                    className="cursor-pointer"
+                  />
+                </Link>
                 <button
                   onClick={onToggle}
                   className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 shrink-0"
@@ -206,24 +229,52 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
           </Link>
 
           <div
-            className={`flex items-center gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
+            ref={menuRef}
+            className={`relative flex items-center gap-3 border-t pt-4 ${
+              isOpen ? "px-2 py-2" : "justify-center"
+            }`}
           >
-            {profilePhoto ? (
-              <div
-                className="h-10 w-10 rounded-full bg-cover bg-center shrink-0"
-                style={{ backgroundImage: `url(${profilePhoto})` }}
-              />
-            ) : (
-              <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">
-                {initials}
-              </div>
-            )}
-            {isOpen && (
-              <div>
-                <p className="text-sm font-bold">{displayName}</p>
-                <p className="text-xs text-gray-500 capitalize">
-                  {user?.role ?? "Investor"}
-                </p>
+            <button
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="flex items-center gap-3 w-full text-left hover:bg-gray-100 rounded-lg p-2 transition"
+            >
+              {profilePhoto ? (
+                <div
+                  className="h-10 w-10 rounded-full bg-cover bg-center shrink-0"
+                  style={{ backgroundImage: `url(${profilePhoto})` }}
+                />
+              ) : (
+                <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">
+                  {initials}
+                </div>
+              )}
+
+              {isOpen && (
+                <>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold">{displayName}</p>
+                    <p className="text-xs text-gray-500 capitalize">
+                      {user?.role ?? "Investor"}
+                    </p>
+                  </div>
+                  <FiChevronUp
+                    className={`transition-transform ${
+                      menuOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </>
+              )}
+            </button>
+
+            {menuOpen && (
+              <div className="absolute bottom-full mb-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-gray-50 w-full"
+                >
+                  <FiLogOut size={16} />
+                  Logout
+                </button>
               </div>
             )}
           </div>
