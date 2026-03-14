@@ -1,49 +1,59 @@
 import Link from "next/link";
 import { FiChevronRight } from "react-icons/fi";
 
+type Step = "asset" | "checkout" | "confirmation";
+
 interface BreadcrumbsProps {
   produceId?: string | null;
+  currentStep: Step;
 }
 
-export default function Breadcrumbs({ produceId }: BreadcrumbsProps) {
+const getSteps = (produceId?: string | null) => [
+  { key: "asset", label: "Select Asset", href: `/opportunities/${produceId}` },
+  {
+    key: "checkout",
+    label: "Checkout",
+    href: `/checkout?produceId=${produceId}`,
+  },
+  {
+    key: "confirmation",
+    label: "Confirmation",
+    href: `/checkout/verifyPayment`,
+  },
+];
+
+export default function Breadcrumbs({
+  produceId,
+  currentStep,
+}: BreadcrumbsProps) {
+  const steps = getSteps(produceId);
+  const currentIndex = steps.findIndex((s) => s.key === currentStep);
+
   return (
     <div className="mb-8">
       <div className="flex items-center gap-2 text-sm mb-4 text-gray-500">
-        <Link
-          href={`/opportunities/${produceId}`}
-          className="hover:text-primary transition"
-        >
-          Select Asset
-        </Link>
+        {steps.map((step, i) => {
+          const isCurrent = step.key === currentStep;
+          const isPast = i < currentIndex;
 
-        <FiChevronRight />
-
-        <Link href="/checkout/review" className="hover:text-primary transition">
-          Review Details
-        </Link>
-
-        <FiChevronRight />
-
-        {/* current page – not clickable */}
-        <span className="font-bold text-primary">Payment</span>
-
-        <FiChevronRight />
-
-        <Link
-          href="/checkout/confirmation"
-          className="text-gray-400 hover:text-primary transition"
-        >
-          Confirmation
-        </Link>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-          Secure Checkout
-        </h1>
-        <p className="text-gray-600">
-          Complete your investment in the Cassava Plantation Cycle 2.
-        </p>
+          return (
+            <span key={step.key} className="flex items-center gap-2">
+              {isCurrent ? (
+                <span className="font-bold text-primary">{step.label}</span>
+              ) : isPast ? (
+                <Link
+                  href={step.href}
+                  className="hover:text-primary transition"
+                >
+                  {step.label}
+                </Link>
+              ) : (
+                <span className="text-gray-400">{step.label}</span>
+              )}
+              {i < steps.length - 1 && <FiChevronRight />}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

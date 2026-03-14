@@ -61,7 +61,7 @@ export default function PaymentMethod({
       </div>
 
       {/* Wallet balance badge — shown whenever balance is available */}
-      {walletBalance !== null && (
+      {walletBalance !== null && method === "wallet" && (
         <div className="flex items-center justify-between bg-primary/10 rounded-lg px-4 py-3 text-sm">
           <div className="flex items-center gap-2 text-primary font-medium">
             <FaWallet />

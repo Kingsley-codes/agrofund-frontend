@@ -1,10 +1,10 @@
 "use client";
 
-import Breadcrumbs from "@/components/verifyPaymentPage/Breadcrumbs";
+import Breadcrumbs from "@/components/checkout/Breadcrumbs";
+import StatusIcon from "@/components/verifyPaymentPage/StatusIcon";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FiArrowRight, FiDownload, FiHome, FiRefreshCw } from "react-icons/fi";
-import { FiCheckCircle, FiXCircle, FiClock } from "react-icons/fi";
 
 type VerifyStatus = "loading" | "success" | "failed" | "pending";
 
@@ -16,40 +16,9 @@ type PaymentDetails = {
   paymentMethod: string;
   date: string;
   transactionId: string;
+  produceId: string;
+  userEmail: string;
 };
-
-// ─── Status icon ────────────────────────────────────────────────────────────
-
-function StatusIcon({ status }: { status: VerifyStatus }) {
-  if (status === "success")
-    return (
-      <div className="relative flex items-center justify-center">
-        <span className="absolute size-28 rounded-full bg-emerald-100" />
-        <div className="relative size-20 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-200">
-          <FiCheckCircle size={36} className="text-white" strokeWidth={2.5} />
-        </div>
-      </div>
-    );
-
-  if (status === "pending")
-    return (
-      <div className="relative flex items-center justify-center">
-        <span className="absolute size-28 rounded-full bg-amber-100" />
-        <div className="relative size-20 rounded-full bg-amber-400 flex items-center justify-center shadow-lg shadow-amber-100">
-          <FiClock size={36} className="text-white" strokeWidth={2.5} />
-        </div>
-      </div>
-    );
-
-  return (
-    <div className="relative flex items-center justify-center">
-      <span className="absolute size-28 rounded-full bg-red-100" />
-      <div className="relative size-20 rounded-full bg-red-500 flex items-center justify-center shadow-lg shadow-red-100">
-        <FiXCircle size={36} className="text-white" strokeWidth={2.5} />
-      </div>
-    </div>
-  );
-}
 
 // ─── Detail row ─────────────────────────────────────────────────────────────
 
@@ -109,6 +78,12 @@ export default function VerifyPaymentContent() {
   const [details, setDetails] = useState<PaymentDetails | null>(null);
   const [retrying, setRetrying] = useState(false);
   const [loading, setLoading] = useState(true); // FIX: now properly toggled
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    setIsAuthenticated(!!storedUser);
+  }, []);
 
   const verify = useCallback(
     async (isRetry = false) => {
@@ -131,15 +106,17 @@ export default function VerifyPaymentContent() {
         const payload = data.data;
 
         setDetails({
-          reference: payload.paymentID ?? reference,
+          reference: payload.investment?.transactionRef ?? reference,
           amount: payload.amount,
           produce: payload.investment?.title ?? "Investment",
           units: payload.investment?.units ?? 1,
-          paymentMethod: payload.investment?.transactionRef ? "Card" : "—",
+          paymentMethod: payload.paymentMethod ?? "—",
           date: payload.investment?.orderDate
             ? new Date(payload.investment.orderDate).toLocaleString()
             : new Date().toLocaleString(),
-          transactionId: payload.investment?._id ?? "—",
+          transactionId: payload.paymentID ?? "—",
+          produceId: payload.investment?.produce ?? null,
+          userEmail: payload.userEmail ?? "—",
         });
 
         setStatus(
@@ -220,7 +197,10 @@ export default function VerifyPaymentContent() {
       `}</style>
 
       <main className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs />
+        <Breadcrumbs
+          produceId={details?.produceId ?? null}
+          currentStep="confirmation"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ── Left column: status card ─────────────────────────── */}
@@ -240,10 +220,19 @@ export default function VerifyPaymentContent() {
                   {status === "success" && (
                     <>
                       <button
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() =>
+                          router.push(
+                            isAuthenticated
+                              ? "/dashboard"
+                              : `/complete-registration?email=${encodeURIComponent(details?.userEmail ?? "")}`,
+                          )
+                        }
                         className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-green-500/20 transition"
                       >
-                        Go to Dashboard <FiArrowRight />
+                        {isAuthenticated
+                          ? "Go to Dashboard"
+                          : "Complete Registration"}{" "}
+                        <FiArrowRight />
                       </button>
                       <button className="flex items-center gap-2 border border-gray-200 hover:border-gray-300 font-semibold py-3 px-5 rounded-xl text-sm text-gray-700 transition">
                         <FiDownload size={14} /> Download Receipt

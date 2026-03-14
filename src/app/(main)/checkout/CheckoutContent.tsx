@@ -134,7 +134,16 @@ export default function CheckoutContent() {
   return (
     <div className="min-h-screen flex flex-col bg-background-light text-[#111b0d] font-display">
       <main className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumbs produceId={produceId} />
+        <Breadcrumbs produceId={produceId} currentStep="checkout" />
+
+        <div className="flex flex-col pb-5 gap-1">
+          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+            Secure Checkout
+          </h1>
+          <p className="text-gray-600">
+            Complete your investment in the Cassava Plantation Cycle 2.
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-7 xl:col-span-8 space-y-8">
