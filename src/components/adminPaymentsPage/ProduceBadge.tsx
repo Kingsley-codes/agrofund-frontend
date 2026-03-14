@@ -1,4 +1,4 @@
-import { ProduceType } from "@/types/investment";
+import { ProduceType } from "@/lib/investment";
 
 interface ProduceBadgeProps {
   type: ProduceType;
