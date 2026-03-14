@@ -8,6 +8,7 @@ import BillingInformation from "@/components/checkout/BillingInformation";
 import PaymentMethod from "@/components/checkout/PaymentMethod";
 import TrustBadges from "@/components/checkout/TrustBadges";
 import OrderSummary from "@/components/checkout/OrderSummary";
+import CheckoutLoading from "@/components/checkout/CheckoutLoading";
 
 type Produce = {
   _id: string;
@@ -51,7 +52,11 @@ export default function CheckoutContent() {
   const [paymentMethod, setPaymentMethod] = useState<
     "card" | "bank" | "wallet"
   >("card");
-  const [loading, setLoading] = useState(true);
+
+  const [produceLoading, setProduceLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
+
+  const loading = produceLoading || profileLoading;
 
   // Fetch produce
   useEffect(() => {
@@ -61,13 +66,15 @@ export default function CheckoutContent() {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/produce/${produceId}`,
         );
+
         if (!res.ok) throw new Error("Failed to fetch produce");
+
         const data = await res.json();
         setProduce(data.produce);
       } catch (err) {
         console.error("Produce fetch error:", err);
       } finally {
-        setLoading(false);
+        setProduceLoading(false);
       }
     };
     fetchProduce();
@@ -85,6 +92,10 @@ export default function CheckoutContent() {
             credentials: "include", // sends auth cookie/token
           },
         );
+
+        // 401 = not logged in, not an error — just continue as guest
+        if (res.status === 401) return;
+
         if (!res.ok) throw new Error("Failed to fetch profile");
         const data = await res.json();
 
@@ -101,12 +112,16 @@ export default function CheckoutContent() {
         });
       } catch (err) {
         console.error("Profile fetch error:", err);
+      } finally {
+        setProfileLoading(false); // ← only controls profile loading
       }
     };
     fetchProfile();
   }, []);
 
-  if (!produceId || loading) return null;
+  if (!produceId) return null;
+
+  if (loading) return <CheckoutLoading />;
 
   if (!produce) {
     return (
