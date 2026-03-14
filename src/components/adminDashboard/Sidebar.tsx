@@ -185,8 +185,8 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
           <nav className="flex flex-col gap-2 w-full">
             {navLinks.map(({ href, label, icon: Icon }) => {
               const isActive =
-                href === "/dashboard"
-                  ? pathname === "/dashboard"
+                href === "/admin/dashboard"
+                  ? pathname === "/admin/dashboard"
                   : pathname.startsWith(href);
               return (
                 <Link

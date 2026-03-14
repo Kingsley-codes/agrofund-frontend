@@ -99,7 +99,7 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
       <aside
         ref={sidebarRef} // ← attach ref here
         className={`
-          flex flex-col justify-between border-r border-gray-200 bg-gray-200 h-full
+          flex flex-col justify-between border-r border-gray-200 bg-gray-100 h-full
           transition-all duration-300 ease-in-out overflow-hidden
           fixed z-50
           md:relative md:z-auto

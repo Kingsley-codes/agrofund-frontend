@@ -65,3 +65,16 @@ export interface ApiResponse {
   count: number;
   produce: ApiProduce[];
 }
+
+export type TransactionStatus = "Completed" | "Pending" | "Failed";
+
+export interface Transaction {
+  id: string;
+  investor: string;
+  investorImage: string;
+  type: string;
+  amount: string;
+  date: string;
+  status: TransactionStatus;
+  statusColor: string;
+}

@@ -4,6 +4,7 @@ import { IoIosClose } from "react-icons/io";
 import { MdDriveFolderUpload } from "react-icons/md";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 interface EditOpportunityModalProps {
   isOpen: boolean;
@@ -116,7 +117,7 @@ export default function EditOpportunityModal({
       toast.success(response.data.message || "Produce updated successfully!");
       onSuccess();
       onClose();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error updating produce:", err);
 
       if (axios.isAxiosError(err)) {
@@ -163,7 +164,7 @@ export default function EditOpportunityModal({
               className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
               disabled={loading}
             >
-              <IoIosClose className="h-7 w-7 bg-red-500 text-white rounded-md hover:bg-red-600" />
+              <IoIosClose className="h-7 w-7 bg-red-600 text-white rounded-md hover:bg-red-700" />
             </button>
           </div>
 
@@ -231,7 +232,7 @@ export default function EditOpportunityModal({
                       setFormData({ ...formData, description: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-                    rows={3}
+                    rows={10}
                     placeholder="Describe the agricultural project..."
                     required
                     disabled={loading}
@@ -361,19 +362,21 @@ export default function EditOpportunityModal({
                 <h3 className="text-lg font-medium text-slate-900 dark:text-white mb-4">
                   Update Images (Optional)
                 </h3>
-                <div className="flex gap-4">
+                <div className="flex justify-center gap-4">
                   {[0, 1, 2].map((index) => (
                     <div key={index} className="flex flex-col items-center">
                       <label className="cursor-pointer">
                         <div className="w-24 h-24 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg flex items-center justify-center hover:border-primary dark:hover:border-blue-500 transition-colors">
                           {formData.images[index] ? (
                             <div className="relative w-full h-full">
-                              <img
+                              <Image
                                 src={URL.createObjectURL(
                                   formData.images[index],
                                 )}
                                 alt={`Upload ${index + 1}`}
-                                className="w-full h-full object-cover rounded-lg"
+                                fill
+                                unoptimized
+                                className="object-cover rounded-lg"
                               />
                               <button
                                 type="button"
@@ -386,7 +389,7 @@ export default function EditOpportunityModal({
                                     images: newImages,
                                   });
                                 }}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
                                 disabled={loading}
                               >
                                 <IoIosClose className="h-4 w-4" />
@@ -422,7 +425,7 @@ export default function EditOpportunityModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 border dark:border-slate-600 rounded-lg text-slate-100 bg-red-500 dark:text-slate-300 hover:bg-red-600 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+                className="px-4 py-2 border dark:border-slate-600 rounded-lg text-slate-100 bg-red-600 dark:text-slate-300 hover:bg-red-700 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
                 disabled={loading}
               >
                 Cancel

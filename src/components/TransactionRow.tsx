@@ -1,14 +1,8 @@
+import { Transaction } from "@/lib";
+import { FiMoreVertical } from "react-icons/fi";
+
 interface TransactionRowProps {
-  transaction: {
-    id: string;
-    investor: string;
-    investorImage: string;
-    type: string;
-    amount: string;
-    date: string;
-    status: "Completed" | "Pending" | "Failed";
-    statusColor: string;
-  };
+  transaction: Transaction;
 }
 
 export default function TransactionRow({ transaction }: TransactionRowProps) {
@@ -85,12 +79,7 @@ export default function TransactionRow({ transaction }: TransactionRowProps) {
 
       <td className="px-6 lg:px-8 py-4 text-right">
         <button className="text-slate-400 hover:text-primary transition-colors">
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: "20px" }}
-          >
-            more_vert
-          </span>
+          <FiMoreVertical size={20} />
         </button>
       </td>
     </tr>

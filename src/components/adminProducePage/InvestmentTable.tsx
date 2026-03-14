@@ -37,10 +37,10 @@ export default function InvestmentTable() {
   const fetchInvestments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/admin/produce", {
-        withCredentials: true,
-      });
-
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/produce`,
+        { withCredentials: true },
+      );
       if (response.data.produce) {
         setInvestments(response.data.produce);
       }
@@ -54,30 +54,30 @@ export default function InvestmentTable() {
 
   const handleEditSuccess = () => {
     toast.success("Investment updated successfully!");
-    fetchInvestments(); // Refresh the list
+    fetchInvestments();
   };
 
   const handleDeleteSuccess = () => {
     toast.success("Investment deleted successfully!");
-    fetchInvestments(); // Refresh the list
+    fetchInvestments();
   };
 
-  // Filter investments based on search term
   const filteredInvestments = investments.filter(
     (investment) =>
       investment.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       investment.produceName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      investment._id.toLowerCase().includes(searchTerm.toLowerCase())
+      investment._id.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
     <div className="flex-1 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm flex flex-col overflow-hidden">
-      {/* Table Toolbar */}
-      <div className="p-3 mx-5 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+      {/* Toolbar */}
+      <div className="p-4 sm:p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
         <h3 className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
           Active Listings
         </h3>
-        <div className="relative border border-gray-200 px-2 py-2 rounded-lg flex w-full sm:max-w-md">
+        <div className="relative border border-gray-200 dark:border-slate-700 px-3 py-2 rounded-lg flex items-center gap-2 w-full sm:max-w-md">
+          <FaSearch className="text-gray-400 h-4 w-4 shrink-0" />
           <input
             className="bg-transparent border-none focus:ring-0 text-sm w-full text-slate-700 dark:text-slate-200 placeholder:text-slate-400"
             placeholder="Search projects..."
@@ -85,61 +85,64 @@ export default function InvestmentTable() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="text-gray-400 hover:text-gray-600 h-5 w-5" />
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        {loading ? (
-          <div className="flex justify-center items-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      ) : filteredInvestments.length === 0 ? (
+        <div className="text-center py-12 text-slate-500 dark:text-slate-400 text-sm">
+          No investments found
+        </div>
+      ) : (
+        <>
+          {/* MOBILE CARDS */}
+          <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+            {filteredInvestments.map((investment) => (
+              <InvestmentRow
+                key={investment._id}
+                investment={investment}
+                onEditSuccess={handleEditSuccess}
+                onDeleteSuccess={handleDeleteSuccess}
+                refreshInvestments={fetchInvestments}
+                mobileCard
+              />
+            ))}
           </div>
-        ) : (
-          <table className="w-full text-left border-collapse min-w-[640px]">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold">
-              <tr>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 rounded-tl-lg">
-                  Investment Name
-                </th>
-                <th className="hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4">
-                  Category
-                </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right">ROI</th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right">
-                  Duration
-                </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right">
-                  Total Units
-                </th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4 text-right rounded-tr-lg">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-              {filteredInvestments.map((investment) => (
-                <InvestmentRow
-                  key={investment._id}
-                  investment={investment}
-                  onEditSuccess={handleEditSuccess}
-                  onDeleteSuccess={handleDeleteSuccess}
-                  refreshInvestments={fetchInvestments}
-                />
-              ))}
-            </tbody>
-          </table>
-        )}
 
-        {!loading && filteredInvestments.length === 0 && (
-          <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-            No investments found
+          {/* DESKTOP TABLE */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-500 dark:text-slate-400 font-semibold">
+                <tr>
+                  <th className="px-6 py-4">Investment Name</th>
+                  <th className="px-6 py-4">Category</th>
+                  <th className="px-6 py-4 text-right">ROI</th>
+                  <th className="px-6 py-4 text-right">Duration</th>
+                  <th className="px-6 py-4 text-right">Total Units</th>
+                  <th className="px-6 py-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+                {filteredInvestments.map((investment) => (
+                  <InvestmentRow
+                    key={investment._id}
+                    investment={investment}
+                    onEditSuccess={handleEditSuccess}
+                    onDeleteSuccess={handleDeleteSuccess}
+                    refreshInvestments={fetchInvestments}
+                  />
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
-      </div>
+        </>
+      )}
 
       {/* Pagination */}
-      <div className="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div className="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between mt-auto">
         <span className="text-xs text-slate-500 dark:text-slate-400">
           Showing {filteredInvestments.length} of {investments.length} listings
         </span>

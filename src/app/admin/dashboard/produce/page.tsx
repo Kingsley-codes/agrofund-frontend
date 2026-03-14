@@ -4,8 +4,8 @@
 import { useState } from "react";
 import Header from "@/components/adminDashboard/Header";
 import StatsCards from "@/components/adminDashboard/StatsCards";
-import InvestmentTable from "@/components/InvestmentTable";
-import NewOpportunityModal from "@/components/AddProduce";
+import InvestmentTable from "@/components/adminProducePage/InvestmentTable";
+import NewOpportunityModal from "@/components/adminProducePage/AddProduce";
 import { IoIosAdd } from "react-icons/io";
 
 export default function Producepage() {
