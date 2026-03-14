@@ -1,4 +1,4 @@
-import { InvestmentStatus } from "@/types/investment";
+import { InvestmentStatus } from "@/lib/investment";
 
 interface StatusBadgeProps {
   status: InvestmentStatus;
