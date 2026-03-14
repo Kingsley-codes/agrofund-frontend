@@ -20,11 +20,14 @@ export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [user, setUser] = useState<NavbarUser | null>(() => {
-    if (typeof window === "undefined") return null;
+  const [user, setUser] = useState<NavbarUser | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    return storedUser ? (JSON.parse(storedUser) as NavbarUser) : null;
-  });
+    setUser(storedUser ? (JSON.parse(storedUser) as NavbarUser) : null);
+    setMounted(true);
+  }, []);
 
   const router = useRouter();
 
@@ -103,97 +106,98 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-3">
           {/* Desktop auth / user section */}
-          {!user ? (
-            <>
-              <Link
-                href="/login"
-                className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary/10 px-4 text-sm font-bold text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
-              >
-                Log In
-              </Link>
-              <Link
-                href="/signup"
-                className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
-              >
-                Sign Up
-              </Link>
-            </>
-          ) : (
-            /* Avatar + Dropdown */
-            <div className="hidden md:flex items-center" ref={dropdownRef}>
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 rounded-full p-1 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40"
-                aria-label="User menu"
-                aria-expanded={isDropdownOpen}
-              >
-                {user?.avatar ? (
-                  <Image
-                    src={user.avatar}
-                    alt="User avatar"
-                    width={38}
-                    height={38}
-                    className="rounded-full object-cover ring-2 ring-primary/30"
-                  />
-                ) : (
-                  <FaUserCircle className="text-[38px] text-primary" />
-                )}
-                {/* Chevron */}
-                <svg
-                  className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+          {mounted &&
+            (!user ? (
+              <>
+                <Link
+                  href="/login"
+                  className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary/10 px-4 text-sm font-bold text-primary border border-primary hover:bg-primary hover:text-white transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              {/* Dropdown Panel */}
-              {isDropdownOpen && (
-                <div className="absolute right-6 top-18 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  {/* User info header */}
-                  {user.firstName && (
-                    <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-                      <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
-                        Signed in as
-                      </p>
-                      <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">
-                        {user.firstName} {user.lastName}
-                      </p>
-                    </div>
+                  Log In
+                </Link>
+                <Link
+                  href="/signup"
+                  className="hidden md:flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
+                >
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              /* Avatar + Dropdown */
+              <div className="hidden md:flex items-center" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2 rounded-full p-1 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  aria-label="User menu"
+                  aria-expanded={isDropdownOpen}
+                >
+                  {user?.avatar ? (
+                    <Image
+                      src={user.avatar}
+                      alt="User avatar"
+                      width={38}
+                      height={38}
+                      className="rounded-full object-cover ring-2 ring-primary/30"
+                    />
+                  ) : (
+                    <FaUserCircle className="text-[38px] text-primary" />
                   )}
+                  {/* Chevron */}
+                  <svg
+                    className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
 
-                  {/* Menu items */}
-                  <div className="py-1.5">
-                    <Link
-                      href="/dashboard"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
-                    >
-                      <FaHome className="text-base text-primary/70" />
-                      Dashboard
-                    </Link>
+                {/* Dropdown Panel */}
+                {isDropdownOpen && (
+                  <div className="absolute right-6 top-18 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    {/* User info header */}
+                    {user.firstName && (
+                      <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+                          Signed in as
+                        </p>
+                        <p className="text-sm font-semibold text-gray-700 truncate mt-0.5">
+                          {user.firstName} {user.lastName}
+                        </p>
+                      </div>
+                    )}
 
-                    <div className="my-1.5 border-t border-gray-100" />
+                    {/* Menu items */}
+                    <div className="py-1.5">
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                      >
+                        <FaHome className="text-base text-primary/70" />
+                        Dashboard
+                      </Link>
 
-                    <button
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors"
-                    >
-                      <FaSignOutAlt className="text-base" />
-                      Log out
-                    </button>
+                      <div className="my-1.5 border-t border-gray-100" />
+
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors"
+                      >
+                        <FaSignOutAlt className="text-base" />
+                        Log out
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            ))}
 
           {/* Mobile menu button */}
           <button
@@ -230,65 +234,66 @@ export default function Navbar() {
               ))}
 
               <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-gray-300">
-                {!user ? (
-                  <>
-                    <Link
-                      href="/login"
-                      className="flex h-12 items-center justify-center rounded-xl border-primary border bg-primary/10 text-base font-bold text-primary hover:bg-primary hover:text-white transition-colors"
-                      onClick={closeMenu}
-                    >
-                      Log In
-                    </Link>
-                    <Link
-                      href="/signup"
-                      className="flex h-12 items-center justify-center rounded-xl bg-primary text-base font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
-                      onClick={closeMenu}
-                    >
-                      Sign Up
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    {/* Mobile user info */}
-                    {user.firstName && (
-                      <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-200">
-                        {user?.avatar ? (
-                          <Image
-                            src={user.avatar}
-                            alt="User avatar"
-                            width={36}
-                            height={36}
-                            className="rounded-full object-cover"
-                          />
-                        ) : (
-                          <FaUserCircle className="text-3xl text-primary shrink-0" />
-                        )}
-                        <p className="text-sm font-medium text-gray-600 truncate">
-                          {user.firstName} {user.lastName}
-                        </p>
-                      </div>
-                    )}
+                {mounted &&
+                  (!user ? (
+                    <>
+                      <Link
+                        href="/login"
+                        className="flex h-12 items-center justify-center rounded-xl border-primary border bg-primary/10 text-base font-bold text-primary hover:bg-primary hover:text-white transition-colors"
+                        onClick={closeMenu}
+                      >
+                        Log In
+                      </Link>
+                      <Link
+                        href="/signup"
+                        className="flex h-12 items-center justify-center rounded-xl bg-primary text-base font-bold text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all"
+                        onClick={closeMenu}
+                      >
+                        Sign Up
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {/* Mobile user info */}
+                      {user.firstName && (
+                        <div className="flex items-center gap-3 px-2 pb-3 border-b border-gray-200">
+                          {user?.avatar ? (
+                            <Image
+                              src={user.avatar}
+                              alt="User avatar"
+                              width={36}
+                              height={36}
+                              className="rounded-full object-cover"
+                            />
+                          ) : (
+                            <FaUserCircle className="text-3xl text-primary shrink-0" />
+                          )}
+                          <p className="text-sm font-medium text-gray-600 truncate">
+                            {user.firstName} {user.lastName}
+                          </p>
+                        </div>
+                      )}
 
-                    <Link
-                      href="/dashboard"
-                      onClick={closeMenu}
-                      className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary/10 text-base font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
-                    >
-                      <FaHome />
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        closeMenu();
-                      }}
-                      className="flex h-12 items-center justify-center gap-2 rounded-xl bg-red-50 text-base font-semibold text-red-600 hover:bg-red-100 transition-colors"
-                    >
-                      <FaSignOutAlt />
-                      Log out
-                    </button>
-                  </>
-                )}
+                      <Link
+                        href="/dashboard"
+                        onClick={closeMenu}
+                        className="flex h-12 items-center justify-center gap-2 rounded-xl bg-primary/10 text-base font-semibold text-primary hover:bg-primary hover:text-white transition-colors"
+                      >
+                        <FaHome />
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          closeMenu();
+                        }}
+                        className="flex h-12 items-center justify-center gap-2 rounded-xl bg-red-50 text-base font-semibold text-red-600 hover:bg-red-100 transition-colors"
+                      >
+                        <FaSignOutAlt />
+                        Log out
+                      </button>
+                    </>
+                  ))}
               </div>
             </div>
           </div>
