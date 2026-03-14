@@ -1,7 +1,7 @@
 "use client";
 
 import { FiArrowRight, FiMoreVertical } from "react-icons/fi";
-import TransactionRow from "../TransactionRow";
+import TransactionRow from "./TransactionRow";
 import { Transaction } from "@/lib";
 
 export default function RecentTransactions() {
