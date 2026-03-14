@@ -331,13 +331,13 @@ export default function SignUpPage() {
               {formStep === 1 && (
                 <>
                   {/* Google Auth */}
-                  <button
-                    type="button"
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`}
                     className="flex w-full items-center justify-center gap-3 rounded-xl hover:cursor-pointer bg-white border border-slate-200 p-3 md:p-3.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm"
                   >
                     <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
                     <span>Sign up with Google</span>
-                  </button>
+                  </a>
 
                   {/* Divider */}
                   <div className="relative flex items-center py-1 md:py-2">

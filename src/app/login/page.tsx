@@ -165,13 +165,13 @@ export default function LoginPage() {
             </div>
 
             {/* Google Login Button */}
-            <button
-              type="button"
+            <a
+              href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`}
               className="flex w-full items-center justify-center gap-3 rounded-xl bg-white border border-slate-200 p-3 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:cursor-pointer transition-colors shadow-sm mb-6"
             >
               <FcGoogle className="w-4 h-4 md:w-5 md:h-5" />
               <span>Continue with Google</span>
-            </button>
+            </a>
 
             {/* Divider */}
             <div className="relative flex items-center py-4">
