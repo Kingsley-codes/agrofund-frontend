@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FiGrid, FiSettings } from "react-icons/fi";
 import { FaUsers } from "react-icons/fa";
 import { PiPlantDuotone } from "react-icons/pi";
@@ -12,6 +12,7 @@ import { GrowIcon } from "@/components/GrowIcon";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FiLogOut, FiChevronUp } from "react-icons/fi";
+import axios from "axios";
 
 export interface UserData {
   firstName?: string;
@@ -75,6 +76,8 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -86,9 +89,24 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin");
-    window.location.href = "/";
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        `${backendUrl}/api/admin/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+    } catch (err) {
+      // even if backend fails, still clear local state
+      console.error("Logout failed", err);
+    } finally {
+      localStorage.removeItem("admin");
+      router.push("/admin/login");
+    }
   };
 
   // Close sidebar when clicking outside (mobile only)
@@ -254,7 +272,7 @@ export default function AdminSidebar({ user, isOpen, onToggle }: SidebarProps) {
                   <div className="flex-1">
                     <p className="text-sm font-bold">{displayName}</p>
                     <p className="text-xs text-gray-500 capitalize">
-                      {user?.role ?? "Investor"}
+                      {user?.role ?? "Admin"}
                     </p>
                   </div>
                   <FiChevronUp
