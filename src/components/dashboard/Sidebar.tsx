@@ -128,7 +128,7 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
         ref={sidebarRef} // ← attach ref here
         className={`
           flex flex-col justify-between border-r border-gray-200 bg-gray-100 h-full
-          transition-all duration-300 ease-in-out overflow-visible
+          transition-all duration-300 ease-in-out overflow-hidden
           fixed z-50
           md:relative md:z-auto
 
@@ -145,12 +145,15 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
           >
             {isOpen ? (
               <>
-                <Image
-                  src="/grow-logo.svg"
-                  alt="Grow logo"
-                  width={120}
-                  height={40}
-                />
+                <Link href="/">
+                  <Image
+                    src="/grow-logo.svg"
+                    alt="Grow logo"
+                    width={120}
+                    height={40}
+                  />
+                </Link>
+
                 <button
                   onClick={onToggle}
                   className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 shrink-0"
@@ -228,7 +231,7 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
 
           <div
             ref={menuRef}
-            className={`flex items-center bg-red-500 gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
+            className={`flex items-center gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
           >
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
