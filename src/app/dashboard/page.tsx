@@ -4,10 +4,10 @@ import { UserData } from "@/components/dashboard/Sidebar";
 import StatsGrid from "@/components/dashboard/StatsGrid";
 import YieldChart from "@/components/dashboard/YieldChart";
 import ActiveInvestments from "@/components/dashboard/ActiveInvestments";
-// import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DashboardPage() {
-  // const { loading } = useAuth({ allowedRoles: ["user"] });
+  const { loading } = useAuth({ allowedRoles: ["user"] });
   const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -25,13 +25,13 @@ export default function DashboardPage() {
 
   const firstName = user?.firstName ?? user?.name?.split(" ")[0] ?? "there";
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex items-center bg-gray-100 justify-center h-screen">
-  //       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="flex items-center bg-gray-100 justify-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 w-full overflow-hidden">

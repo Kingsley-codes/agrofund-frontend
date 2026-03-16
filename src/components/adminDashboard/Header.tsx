@@ -59,7 +59,7 @@ export default function Header() {
           </button>
 
           {/* New Produce — icon only on mobile, full on sm+ */}
-          <button className="flex h-9 sm:h-10 items-center justify-center rounded-xl bg-primary text-gray-800 text-sm font-semibold hover:bg-primary-dark transition-colors gap-2 px-2 sm:px-4 whitespace-nowrap">
+          <button className="flex h-9 sm:h-10 items-center justify-center rounded-xl bg-primary text-gray-100 text-sm font-semibold hover:bg-primary-dark transition-colors gap-2 px-2 sm:px-4 whitespace-nowrap">
             <IoIosAdd className="h-5 w-5 shrink-0" />
             <span className="hidden sm:inline">New Produce</span>
           </button>
