@@ -122,6 +122,16 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
     }
   }, [pathname, onToggle]);
 
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <aside
@@ -231,7 +241,7 @@ export default function Sidebar({ user, isOpen, onToggle }: SidebarProps) {
 
           <div
             ref={menuRef}
-            className={`flex items-center gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
+            className={`flex relative  items-center gap-3 border-t pt-4 ${isOpen ? "px-2 py-2" : "justify-center"}`}
           >
             <button
               onClick={() => setMenuOpen((prev) => !prev)}
