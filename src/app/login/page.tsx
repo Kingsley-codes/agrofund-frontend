@@ -66,9 +66,9 @@ export default function LoginPage() {
           JSON.stringify({ ...response.data.data.user, role: "user" }),
         );
 
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1500);
+        // setTimeout(() => {
+        //   window.location.href = "/dashboard";
+        // }, 1500);
       } else {
         toast.error(response.data.message || "An error occurred during login.");
       }
