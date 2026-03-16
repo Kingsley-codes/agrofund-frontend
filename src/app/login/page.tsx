@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import { ArrowLeft } from "lucide-react";
@@ -20,6 +21,8 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+
+  const router = useRouter();
 
   // Check if form is valid
   useEffect(() => {
@@ -66,9 +69,9 @@ export default function LoginPage() {
           JSON.stringify({ ...response.data.data.user, role: "user" }),
         );
 
-        // setTimeout(() => {
-        //   window.location.href = "/dashboard";
-        // }, 1500);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1500);
       } else {
         toast.error(response.data.message || "An error occurred during login.");
       }
