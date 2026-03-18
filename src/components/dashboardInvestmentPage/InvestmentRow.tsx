@@ -1,4 +1,5 @@
 type Props = {
+  id: string;
   image: string;
   name: string;
   farm: string;
@@ -6,6 +7,7 @@ type Props = {
   progress: number;
   status: string;
   roi: string;
+  mobileCard?: boolean;
 };
 
 type StatusBadgeProps = {
@@ -20,7 +22,7 @@ function StatusBadge({ status }: StatusBadgeProps) {
   };
   return (
     <span
-      className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
+      className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold ${
         colors[status] ?? "bg-gray-100 text-gray-600"
       }`}
     >
@@ -29,15 +31,11 @@ function StatusBadge({ status }: StatusBadgeProps) {
   );
 }
 
-type ProgressBarProps = {
-  progress: number;
-};
-
-function ProgressBar({ progress }: ProgressBarProps) {
+function ProgressBar({ progress }: { progress: number }) {
   return (
     <div className="w-full bg-gray-200 h-2 rounded-full">
       <div
-        className="bg-green-500 h-2 rounded-full transition-all"
+        className="bg-green-500 h-2 rounded-full transition-all duration-700"
         style={{ width: `${progress}%` }}
       />
     </div>
@@ -52,74 +50,89 @@ export default function InvestmentRow({
   progress,
   status,
   roi,
+  mobileCard = false,
 }: Props) {
-  return (
-    <>
-      {/* ── Mobile card (hidden on md+) ── */}
-      <tr className="lg:hidden border-b border-gray-300 last:border-b-0">
-        <td colSpan={7} className="p-4">
-          <div className="flex items-start gap-3">
-            <div
-              className="shrink-0 size-14 rounded-lg bg-cover bg-center"
-              style={{ backgroundImage: `url(${image})` }}
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="font-bold text-gray-800 truncate">{name}</p>
-                  <p className="text-xs text-gray-500 truncate">{farm}</p>
-                </div>
-                <span className="shrink-0 text-sm font-bold text-green-500">
-                  {roi}
-                </span>
-              </div>
-              <div className="mt-2">
-                <ProgressBar progress={progress} />
-              </div>
-              <div className="mt-2 flex items-center justify-between gap-2 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <StatusBadge status={status} />
-                  <span className="text-xs text-gray-600 font-medium">
-                    {invested}
-                  </span>
-                </div>
-                <button className="px-3 py-1.5 text-gray-700 text-xs font-bold border rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors">
-                  Details
-                </button>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-
-      {/* ── Desktop row (hidden below md) ── */}
-      <tr className="hidden lg:table-row hover:bg-gray-50 last:border-b-0 border-b">
-        <td className="px-6 py-4">
+  // ── Mobile card variant ──
+  if (mobileCard) {
+    return (
+      <div className="p-4">
+        <div className="flex items-start gap-3">
           <div
-            className="size-12 rounded-lg bg-cover bg-center"
+            className="shrink-0 size-14 rounded-xl bg-cover bg-center"
             style={{ backgroundImage: `url(${image})` }}
           />
-        </td>
-        <td className="px-6 py-4">
-          <p className="font-bold text-gray-700">{name}</p>
-          <p className="text-sm text-gray-500">{farm}</p>
-        </td>
-        <td className="px-6 py-4 text-gray-700">{invested}</td>
-        <td className="px-6 py-4">
-          <div className="w-36">
-            <ProgressBar progress={progress} />
+          <div className="flex-1 min-w-0">
+            {/* Title row */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="font-bold text-gray-800 text-sm leading-snug truncate">
+                  {name}
+                </p>
+                <p className="text-xs text-gray-500 mt-0.5 truncate">{farm}</p>
+              </div>
+              <span className="shrink-0 text-sm font-bold text-green-600">
+                {roi}
+              </span>
+            </div>
+
+            {/* Progress */}
+            <div className="mt-3">
+              <div className="flex justify-between text-xs text-gray-400 mb-1">
+                <span>Stage progress</span>
+                <span>{progress}%</span>
+              </div>
+              <ProgressBar progress={progress} />
+            </div>
+
+            {/* Footer row */}
+            <div className="mt-3 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <StatusBadge status={status} />
+                <span className="text-xs font-semibold text-gray-700">
+                  {invested}
+                </span>
+              </div>
+              <button className="px-3 py-1.5 text-gray-700 text-xs font-bold border border-[#d5e7cf] rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                Details
+              </button>
+            </div>
           </div>
-        </td>
-        <td className="px-6 py-4">
-          <StatusBadge status={status} />
-        </td>
-        <td className="px-6 py-4 text-green-500 font-bold">{roi}</td>
-        <td className="px-6 py-4 text-right">
-          <button className="px-4 py-2 text-gray-700 text-sm font-bold border rounded-lg hover:bg-gray-50 transition-colors">
-            Details
-          </button>
-        </td>
-      </tr>
-    </>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Desktop table row variant ──
+  return (
+    <tr className="hover:bg-gray-50 transition-colors">
+      <td className="px-6 py-4">
+        <div
+          className="size-12 rounded-xl bg-cover bg-center"
+          style={{ backgroundImage: `url(${image})` }}
+        />
+      </td>
+      <td className="px-6 py-4">
+        <p className="font-bold text-gray-700 text-sm">{name}</p>
+        <p className="text-xs text-gray-500 mt-0.5">{farm}</p>
+      </td>
+      <td className="px-6 py-4 text-gray-700 text-sm font-medium">
+        {invested}
+      </td>
+      <td className="px-6 py-4">
+        <div className="w-36 space-y-1">
+          <ProgressBar progress={progress} />
+          <p className="text-xs text-gray-400">{progress}% complete</p>
+        </div>
+      </td>
+      <td className="px-6 py-4">
+        <StatusBadge status={status} />
+      </td>
+      <td className="px-6 py-4 text-green-600 font-bold text-sm">{roi}</td>
+      <td className="px-6 py-4 text-right">
+        <button className="px-4 py-2 border border-[#d5e7cf] text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors">
+          Details
+        </button>
+      </td>
+    </tr>
   );
 }
