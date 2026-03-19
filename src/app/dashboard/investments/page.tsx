@@ -74,7 +74,7 @@ export default function InvestmentsPage() {
   if (loading || fetchLoading) {
     return (
       <div className="flex items-center bg-gray-100 justify-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-r-4 border-primary"></div>
       </div>
     );
   }

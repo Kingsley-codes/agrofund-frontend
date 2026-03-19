@@ -1,13 +1,15 @@
 type Props = {
   id: string;
+  orderID: string;
   image: string;
   name: string;
   farm: string;
   invested: string;
-  progress: number;
+  stage: string;
   status: string;
   roi: string;
   mobileCard?: boolean;
+  onDetails: () => void;
 };
 
 type StatusBadgeProps = {
@@ -16,9 +18,9 @@ type StatusBadgeProps = {
 
 function StatusBadge({ status }: StatusBadgeProps) {
   const colors: Record<string, string> = {
-    Growing: "bg-green-100 text-green-700",
-    Sold: "bg-blue-100 text-blue-700",
-    Pending: "bg-yellow-100 text-yellow-700",
+    ongoing: "bg-green-100 text-green-700",
+    completed: "bg-blue-100 text-blue-700",
+    pending: "bg-yellow-100 text-yellow-700",
   };
   return (
     <span
@@ -26,31 +28,44 @@ function StatusBadge({ status }: StatusBadgeProps) {
         colors[status] ?? "bg-gray-100 text-gray-600"
       }`}
     >
-      {status}
+      {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
 }
 
-function ProgressBar({ progress }: { progress: number }) {
+function StageLabel({ stage }: { stage: string }) {
+  const labels: Record<string, string> = {
+    "pre-harvest": "Pre-Harvest",
+    growing: "Growing",
+    harvest: "Harvest",
+    completed: "Completed",
+  };
+  const colors: Record<string, string> = {
+    "pre-harvest": "text-amber-700",
+    growing: "text-green-700",
+    harvest: "text-blue-700",
+    completed: "text-gray-500",
+  };
   return (
-    <div className="w-full bg-gray-200 h-2 rounded-full">
-      <div
-        className="bg-green-500 h-2 rounded-full transition-all duration-700"
-        style={{ width: `${progress}%` }}
-      />
-    </div>
+    <span
+      className={`text-sm font-semibold ${colors[stage] ?? "text-gray-600"}`}
+    >
+      {labels[stage] ?? stage}
+    </span>
   );
 }
 
 export default function InvestmentRow({
+  orderID,
   image,
   name,
   farm,
   invested,
-  progress,
+  stage,
   status,
   roi,
   mobileCard = false,
+  onDetails,
 }: Props) {
   // ── Mobile card variant ──
   if (mobileCard) {
@@ -69,19 +84,19 @@ export default function InvestmentRow({
                   {name}
                 </p>
                 <p className="text-xs text-gray-500 mt-0.5 truncate">{farm}</p>
+                <p className="text-xs text-gray-400 mt-0.5 font-bold">
+                  {orderID}
+                </p>
               </div>
               <span className="shrink-0 text-sm font-bold text-green-600">
                 {roi}
               </span>
             </div>
 
-            {/* Progress */}
-            <div className="mt-3">
-              <div className="flex justify-between text-xs text-gray-400 mb-1">
-                <span>Stage progress</span>
-                <span>{progress}%</span>
-              </div>
-              <ProgressBar progress={progress} />
+            {/* Stage */}
+            <div className="mt-2">
+              <span className="text-xs text-gray-400">Stage: </span>
+              <StageLabel stage={stage} />
             </div>
 
             {/* Footer row */}
@@ -92,7 +107,10 @@ export default function InvestmentRow({
                   {invested}
                 </span>
               </div>
-              <button className="px-3 py-1.5 text-gray-700 text-xs font-bold border border-[#d5e7cf] rounded-lg hover:bg-gray-50 active:bg-gray-100 transition-colors">
+              <button
+                onClick={onDetails}
+                className="px-3 py-1.5 text-gray-700 text-xs font-bold border border-[#d5e7cf] rounded-lg hover:bg-gray-200 active:bg-gray-100 transition-colors"
+              >
                 Details
               </button>
             </div>
@@ -105,6 +123,7 @@ export default function InvestmentRow({
   // ── Desktop table row variant ──
   return (
     <tr className="hover:bg-gray-50 transition-colors">
+      <td className="px-6 py-4 font-bold text-xs text-gray-500">{orderID}</td>
       <td className="px-6 py-4">
         <div
           className="size-12 rounded-xl bg-cover bg-center"
@@ -119,17 +138,17 @@ export default function InvestmentRow({
         {invested}
       </td>
       <td className="px-6 py-4">
-        <div className="w-36 space-y-1">
-          <ProgressBar progress={progress} />
-          <p className="text-xs text-gray-400">{progress}% complete</p>
-        </div>
+        <StageLabel stage={stage} />
       </td>
       <td className="px-6 py-4">
         <StatusBadge status={status} />
       </td>
       <td className="px-6 py-4 text-green-600 font-bold text-sm">{roi}</td>
       <td className="px-6 py-4 text-right">
-        <button className="px-4 py-2 border border-[#d5e7cf] text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-50 transition-colors">
+        <button
+          onClick={onDetails}
+          className="px-4 py-2 border border-[#d5e7cf] text-gray-700 text-sm font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+        >
           Details
         </button>
       </td>

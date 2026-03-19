@@ -40,10 +40,10 @@ export default function DashboardPage() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
-              <h2 className="text-3xl md:text-4xl text-gray-700 font-extrabold mb-2">
+              <h2 className="text-3xl md:text-4xl text-gray-800 font-semibold mb-2">
                 Welcome back, {firstName}
               </h2>
-              <p className="text-gray-600 font-medium">
+              <p className="text-gray-500">
                 Here is an overview of your agricultural portfolio.
               </p>
             </div>
