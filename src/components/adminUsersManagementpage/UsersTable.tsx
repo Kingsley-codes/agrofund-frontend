@@ -1,90 +1,101 @@
 "use client";
 
-import { useState } from "react";
-import { MdSearch, MdDownload, MdExpandMore, MdMoreVert } from "react-icons/md";
+import Image from "next/image";
+import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  MdSearch,
+  MdDownload,
+  MdExpandMore,
+  MdMoreVert,
+  MdRefresh,
+  MdCheckCircle,
+  MdBlock,
+} from "react-icons/md";
 
-type Role = "Investor" | "Farmer" | "Admin";
 type Status = "Active" | "Pending" | "Suspended";
 
+interface ApiUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  farmerID?: string;
+  profilePhoto?: { url: string; publicId: string };
+  status: string;
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
+  wallet?: {
+    balance: number;
+    currency: string;
+    walletId: string;
+  };
+}
+
 interface User {
-  id: number;
+  id: string;
+  userID: string;
   name: string;
   email: string;
   avatar: string;
-  role: Role;
+  isVerified: boolean;
   balance: string;
   status: Status;
-  lastLogin: string;
-  lastLoginTime?: string;
+  joinedDate: string;
+  joinedTime: string;
 }
 
-const users: User[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    email: "sarah.j@example.com",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAgW6FHygniBW89kFh5kl6jkJboJc5oFjCgmV8SzdJ-wB8hjNNIKxN_cTrsBs8hvank505yUmhpa9iZeDpxGzEUlH6oBDTlxPqtyvylzGvvEV-ksOSSlBUytQqBgKlcPUW0EiQ4G8fHVAmkrFHyWXHQ9N2hzXSv6Cxen0hHSLeJS-XHkgsjPNNNutEq2WB2i3j2MQcgApxzUV1suy9n1lBHmn89GiIgs-FYDW9dCqvbUFho8gmwC2vOfFf6fOyTgktDo7dVYYN3xOg",
-    role: "Investor",
-    balance: "$12,450.00",
-    status: "Active",
-    lastLogin: "Oct 24, 2023",
-    lastLoginTime: "10:45 AM",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    email: "m.chen@agrifarm.co",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC41-fB9kuaWSbmZGfpbxb6xeXID_nNNrMaK_u9PmIYfT_MU_zGgLx809_NyfuUK8tW5shi2DI4U-lR5LCOyUFjMHRJJfr6DrJB6rAnkBV-uJBxTWxhruOY68x9CE_efidD9PfnaYSO7L16wTV2cOTbY7mys-7qQ4-RWLSrXbYf1fxxSTf64WWLxwauokQRLq5JbvXIoS70y00ZpFmf4h3l-ygcI2YEwAO3mL1g6sLdyzCdX8oSHKKuNmPdWRPJ2FX7bw8jWV0wbZI",
-    role: "Farmer",
-    balance: "$3,200.00",
-    status: "Pending",
-    lastLogin: "Never",
-  },
-  {
-    id: 3,
-    name: "Emily Davis",
-    email: "emily.d@example.com",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBv5NK0Od2aiT7vwCIVD2rGNsv2hlGzMtV9epfVNLSysB5l_iYrgQM6P_kaCP2WN13qFxHm5fhBTKIQUebzmYoieHWBd2WK7DaJVY9a1zpKO7wIBB1UXoLdhsIq7lsIP8ClyuJ8U0C8StvDt8NJSdRcYOLVu6osupOPlox_OYVdmuW9GEcRcOIcmKQlSZRC3_PmkueyR--SoyHIlPvxRlcapEGG7DQ5FkeWwa2sXZImM1WUuGUFuCUPLFZiR3vXtx65uvtUCj_M0j8",
-    role: "Investor",
-    balance: "$8,940.50",
-    status: "Active",
-    lastLogin: "Oct 23, 2023",
-    lastLoginTime: "2:15 PM",
-  },
-  {
-    id: 4,
-    name: "James Wilson",
-    email: "j.wilson@demo.com",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBjZ20CIDXAFso2OL7w3o3F3t6lCVCwMaoJKW8EY2GyMcLmn7S5Fi-lpv53IQs_bepEQXXeJn2jya4st1_i8n_Qj1BSoa8TnPlACako_5kvno5yhzNdnpPs0eR--t9sSzK69DZcmfHBH62CTWXgscTP2Kzav-bcwq2UBVblsc-jbv1INslR0sagBYjzHVj0wvhA3tMESitqhEGxaVUf9BVbXtJq_RknahBlbTJPMIasusrTL7vkntGioFswAky8ysqn7wSCCZwrHa8",
-    role: "Investor",
-    balance: "$0.00",
-    status: "Suspended",
-    lastLogin: "Sep 12, 2023",
-  },
-  {
-    id: 5,
-    name: "Maria Garcia",
-    email: "maria.g@grow.io",
-    avatar:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBrFKDThP_AjU4Ioj3dR7bO-Jtvi7iqeYWBt1fNI8I0ZCTpr59q4x07dBj_vJaIzxrjtMIGGcYhsjXmDejoBLJsA_kDo9J9zJSxuEzmY-catQ1p4AF2FiD5NyMU6Qu2FWq6LcZ-vsEmu6J4N411QZAXqztLo0CkyqnkDUPYktXLWyHNjvkF4H0q_0KrLfRhKkT5mhdo08mlQKBmbbHC3PmS4teaLRl3k9nCPHDgj8fkLtaXj2ugAES1nR_jkOE90GHbUffYIy_socM",
-    role: "Farmer",
-    balance: "$5,600.00",
-    status: "Active",
-    lastLogin: "Today",
-    lastLoginTime: "9:00 AM",
-  },
-];
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "";
 
-const roleBadge: Record<Role, string> = {
-  Investor: "bg-blue-50 text-blue-700 border border-blue-100",
-  Farmer: "bg-amber-50 text-amber-700 border border-amber-100",
-  Admin: "bg-purple-50 text-purple-700 border border-purple-100",
-};
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function normalizeStatus(raw: string): Status {
+  const map: Record<string, Status> = {
+    active: "Active",
+    pending: "Pending",
+    suspended: "Suspended",
+    deactivated: "Suspended",
+    inactive: "Suspended",
+  };
+  return map[raw?.toLowerCase()] ?? "Pending";
+}
 
+function formatWalletBalance(wallet?: ApiUser["wallet"]): string {
+  if (!wallet) return "N/A";
+  const currency = wallet.currency === "NGN" ? "₦" : "$";
+  return `${currency}${wallet.balance.toLocaleString("en-NG", { minimumFractionDigits: 2 })}`;
+}
+
+function formatDate(iso: string): { date: string; time: string } {
+  const d = new Date(iso);
+  return {
+    date: d.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
+    time: d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
+
+function mapApiUser(u: ApiUser): User {
+  const { date, time } = formatDate(u.createdAt);
+  return {
+    id: u._id,
+    userID: u.farmerID ?? u._id.slice(-8).toUpperCase(),
+    name: `${u.firstName} ${u.lastName}`,
+    email: u.email,
+    avatar:
+      u.profilePhoto?.url ||
+      `https://ui-avatars.com/api/?name=${encodeURIComponent(u.firstName + " " + u.lastName)}&background=d5e7cf&color=111b0d`,
+    isVerified: u.isVerified,
+    balance: formatWalletBalance(u.wallet),
+    status: normalizeStatus(u.status),
+    joinedDate: date,
+    joinedTime: time,
+  };
+}
+
+// ── Badge helpers ─────────────────────────────────────────────────────────────
 const statusBadge: Record<Status, { wrapper: string; dot: string }> = {
   Active: {
     wrapper: "bg-green-50 text-green-700 border border-green-100",
@@ -100,9 +111,92 @@ const statusBadge: Record<Status, { wrapper: string; dot: string }> = {
   },
 };
 
-// ── Mobile card ─────────────────────────────────────────────────────────────
-function UserCard({ user }: { user: User }) {
-  const role = roleBadge[user.role];
+function VerifiedBadge({ verified }: { verified: boolean }) {
+  return (
+    <span
+      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+        verified
+          ? "bg-blue-50 text-blue-700 border border-blue-100"
+          : "bg-amber-50 text-amber-700 border border-amber-100"
+      }`}
+    >
+      {verified ? "Verified" : "Unverified"}
+    </span>
+  );
+}
+
+// ── Action dropdown ───────────────────────────────────────────────────────────
+interface ActionMenuProps {
+  userId: string;
+  currentStatus: Status;
+  onAction: (userId: string, action: "activate" | "suspend") => Promise<void>;
+}
+
+function ActionMenu({ userId, currentStatus, onAction }: ActionMenuProps) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  async function handleAction(action: "activate" | "suspend") {
+    setBusy(true);
+    setOpen(false);
+    await onAction(userId, action);
+    setBusy(false);
+  }
+
+  return (
+    <div ref={ref} className="relative inline-block">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        disabled={busy}
+        className="text-[#5e9a4c] hover:text-[#111b0d] transition-colors p-1 rounded hover:bg-gray-100 disabled:opacity-40"
+      >
+        <MdMoreVert className="text-xl" />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 z-50 mt-1 w-44 rounded-xl border border-[#d5e7cf] bg-white shadow-lg py-1">
+          <button
+            onClick={() => handleAction("activate")}
+            disabled={currentStatus === "Active"}
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-sm text-green-700 hover:bg-green-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <MdCheckCircle className="text-base shrink-0" />
+            Activate User
+          </button>
+          <button
+            onClick={() => handleAction("suspend")}
+            disabled={currentStatus === "Suspended"}
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <MdBlock className="text-base shrink-0" />
+            Suspend User
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Mobile card ───────────────────────────────────────────────────────────────
+function UserCard({
+  user,
+  onAction,
+}: {
+  user: User;
+  onAction: (userId: string, action: "activate" | "suspend") => Promise<void>;
+}) {
   const status = statusBadge[user.status];
 
   return (
@@ -111,29 +205,31 @@ function UserCard({ user }: { user: User }) {
         type="checkbox"
         className="mt-1 rounded border-[#d5e7cf] text-[#46ec13] focus:ring-[#46ec13]/50 h-4 w-4 shrink-0"
       />
-      <div
-        className="size-10 rounded-full bg-cover bg-center shrink-0"
-        style={{ backgroundImage: `url('${user.avatar}')` }}
+      <Image
+        src={user.avatar}
+        alt={user.name}
+        width={40}
+        height={40}
+        className="rounded-full object-cover shrink-0"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src =
+            `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=d5e7cf&color=111b0d`;
+        }}
       />
       <div className="flex-1 min-w-0">
-        {/* Name + action */}
         <div className="flex items-center justify-between gap-2">
-          <span className="font-bold text-[#111b0d] text-md truncate">
+          <span className="font-bold text-[#111b0d] text-sm truncate">
             {user.name}
           </span>
-          <button className="text-[#5e9a4c] hover:text-[#111b0d] transition-colors p-1 rounded hover:bg-gray-100 shrink-0">
-            <MdMoreVert className="text-xl" />
-          </button>
+          <ActionMenu
+            userId={user.id}
+            currentStatus={user.status}
+            onAction={onAction}
+          />
         </div>
-        {/* Email */}
         <p className="text-xs text-[#5e9a4c] truncate mb-2">{user.email}</p>
-        {/* Badges + balance */}
         <div className="flex flex-wrap items-center gap-2">
-          <span
-            className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${role}`}
-          >
-            {user.role}
-          </span>
+          <VerifiedBadge verified={user.isVerified} />
           <span
             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${status.wrapper}`}
           >
@@ -144,12 +240,10 @@ function UserCard({ user }: { user: User }) {
             {user.balance}
           </span>
         </div>
-        {/* Last login */}
         <p className="text-xs text-[#5e9a4c] mt-1.5">
-          Last login:{" "}
+          Joined:{" "}
           <span className="text-[#111b0d]">
-            {user.lastLogin}
-            {user.lastLoginTime ? ` · ${user.lastLoginTime}` : ""}
+            {user.joinedDate} · {user.joinedTime}
           </span>
         </p>
       </div>
@@ -157,15 +251,114 @@ function UserCard({ user }: { user: User }) {
   );
 }
 
-// ── Main export ─────────────────────────────────────────────────────────────
+// ── Skeleton loader ───────────────────────────────────────────────────────────
+function SkeletonRow() {
+  return (
+    <tr className="animate-pulse">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <td key={i} className="p-4">
+          <div className="h-4 bg-[#eaf3e7] rounded w-3/4" />
+        </td>
+      ))}
+    </tr>
+  );
+}
+
+// ── Main export ───────────────────────────────────────────────────────────────
 export default function UsersTable() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All Status");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchUsers = useCallback(async (currentPage = 1) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `${BACKEND_URL}/api/admin/dashboard/users?page=${currentPage}`,
+        { credentials: "include" },
+      );
+      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+      const json = await res.json();
+      if (!json.success) throw new Error("API returned success: false");
+
+      setUsers((json.data as ApiUser[]).map(mapApiUser));
+      setPage(json.page ?? 1);
+      setTotalPages(json.pages ?? 1);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load users");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchUsers(page);
+  }, [page, fetchUsers]);
+
+  // ── Optimistic activate / suspend ─────────────────────────────────────────
+  const handleAction = useCallback(
+    async (userId: string, action: "activate" | "suspend") => {
+      setActionError(null);
+
+      // Optimistic update
+      const previousUsers = users;
+      const newStatus: Status = action === "activate" ? "Active" : "Suspended";
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u)),
+      );
+
+      try {
+        const endpoint =
+          action === "activate"
+            ? `${BACKEND_URL}/api/admin/dashboard/users/activate`
+            : `${BACKEND_URL}/api/admin/dashboard/users/suspend`;
+
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ userId }),
+        });
+
+        if (!res.ok)
+          throw new Error(`Request failed with status ${res.status}`);
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message ?? "Action failed");
+      } catch (err) {
+        // Roll back on failure
+        setUsers(previousUsers);
+        setActionError(
+          err instanceof Error
+            ? err.message
+            : "Action failed. Please try again.",
+        );
+      }
+    },
+    [users],
+  );
+
+  // Client-side search + status filter
+  const filtered = users.filter((u) => {
+    const matchSearch =
+      !search ||
+      u.name.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase()) ||
+      u.userID.toLowerCase().includes(search.toLowerCase());
+    const matchStatus =
+      statusFilter === "All Status" || u.status === statusFilter;
+    return matchSearch && matchStatus;
+  });
 
   return (
     <div>
       {/* ── Toolbar ── */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6 justify-between items-stretch sm:items-center">
-        {/* Search */}
         <label className="relative flex items-center w-full sm:max-w-xs group">
           <MdSearch className="absolute left-4 text-xl text-[#5e9a4c] group-focus-within:text-[#46ec13] transition-colors" />
           <input
@@ -177,27 +370,28 @@ export default function UsersTable() {
           />
         </label>
 
-        {/* Filters + Export */}
         <div className="flex gap-2 flex-wrap">
           <div className="relative flex-1 sm:flex-none">
-            <select className="w-full h-11 pl-3 pr-9 bg-white border border-[#d5e7cf] rounded-lg text-sm font-medium text-[#111b0d] focus:ring-1 focus:ring-[#46ec13] focus:border-[#46ec13] appearance-none cursor-pointer hover:bg-gray-50 transition-colors">
-              <option>All Roles</option>
-              <option>Investor</option>
-              <option>Farmer</option>
-              <option>Admin</option>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full h-11 pl-3 pr-9 bg-white border border-[#d5e7cf] rounded-lg text-sm font-medium text-[#111b0d] focus:ring-1 focus:ring-[#46ec13] focus:border-[#46ec13] appearance-none cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <option>All Status</option>
+              <option>Active</option>
+              <option>Pending</option>
+              <option>Suspended</option>
             </select>
             <MdExpandMore className="absolute right-2.5 top-3 text-[#5e9a4c] pointer-events-none text-xl" />
           </div>
 
-          <div className="relative flex-1 sm:flex-none">
-            <select className="w-full h-11 pl-3 pr-9 bg-white border border-[#d5e7cf] rounded-lg text-sm font-medium text-[#111b0d] focus:ring-1 focus:ring-[#46ec13] focus:border-[#46ec13] appearance-none cursor-pointer hover:bg-gray-50 transition-colors">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Pending</option>
-              <option>Deactivated</option>
-            </select>
-            <MdExpandMore className="absolute right-2.5 top-3 text-[#5e9a4c] pointer-events-none text-xl" />
-          </div>
+          <button
+            onClick={() => fetchUsers(page)}
+            className="h-11 px-4 flex items-center gap-2 bg-white border border-[#d5e7cf] rounded-lg text-sm font-bold text-[#111b0d] hover:bg-gray-50 transition-colors shrink-0"
+            title="Refresh"
+          >
+            <MdRefresh className="text-lg" />
+          </button>
 
           <button className="h-11 px-4 flex items-center gap-2 bg-white border border-[#d5e7cf] rounded-lg text-sm font-bold text-[#111b0d] hover:bg-gray-50 transition-colors shrink-0">
             <MdDownload className="text-lg" />
@@ -206,6 +400,30 @@ export default function UsersTable() {
         </div>
       </div>
 
+      {/* ── Error banners ── */}
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center justify-between">
+          <span>⚠ {error}</span>
+          <button
+            onClick={() => fetchUsers(page)}
+            className="underline font-semibold hover:text-red-900"
+          >
+            Retry
+          </button>
+        </div>
+      )}
+      {actionError && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center justify-between">
+          <span>⚠ {actionError}</span>
+          <button
+            onClick={() => setActionError(null)}
+            className="underline font-semibold hover:text-red-900"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* ── Table / Cards ── */}
       <div className="bg-white border border-[#d5e7cf] rounded-xl overflow-hidden shadow-sm">
         {/* Desktop table */}
@@ -213,18 +431,14 @@ export default function UsersTable() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#f9fcf8] border-b border-[#d5e7cf]">
-                <th className="p-4 pl-6 w-12">
-                  <input
-                    type="checkbox"
-                    className="rounded border-[#d5e7cf] text-[#46ec13] focus:ring-[#46ec13]/50 h-4 w-4"
-                  />
-                </th>
                 {[
+                  "User ID",
+                  "Profile Photo",
                   "User",
-                  "Role",
+                  "Verified",
                   "Wallet Balance",
                   "Status",
-                  "Last Login",
+                  "Joined",
                   "Actions",
                 ].map((col) => (
                   <th
@@ -239,26 +453,44 @@ export default function UsersTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#eaf3e7]">
-              {users.map((user) => {
-                const role = roleBadge[user.role];
-                const status = statusBadge[user.status];
-                return (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-[#f9fcf8] transition-colors"
+              {loading ? (
+                Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
+              ) : filtered.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="text-center py-12 text-[#5e9a4c] text-sm"
                   >
-                    <td className="p-4 pl-6">
-                      <input
-                        type="checkbox"
-                        className="rounded border-[#d5e7cf] text-[#46ec13] focus:ring-[#46ec13]/50 h-4 w-4"
-                      />
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="size-10 rounded-full bg-cover bg-center shrink-0"
-                          style={{ backgroundImage: `url('${user.avatar}')` }}
+                    No users match your search.
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((user) => {
+                  const status = statusBadge[user.status];
+                  return (
+                    <tr
+                      key={user.id}
+                      className="hover:bg-[#f9fcf8] transition-colors"
+                    >
+                      <td className="p-4 pl-6">
+                        <span className="text-sm font-mono font-medium text-[#111b0d]">
+                          {user.userID}
+                        </span>
+                      </td>
+                      <td className="p-4 px-7">
+                        <Image
+                          src={user.avatar}
+                          alt={user.name}
+                          width={40}
+                          height={40}
+                          className="rounded-full object-cover shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src =
+                              `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=d5e7cf&color=111b0d`;
+                          }}
                         />
+                      </td>
+                      <td className="p-4">
                         <div className="flex flex-col">
                           <span className="font-bold text-[#111b0d] text-sm">
                             {user.name}
@@ -267,76 +499,90 @@ export default function UsersTable() {
                             {user.email}
                           </span>
                         </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${role}`}
-                      >
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-sm font-medium text-[#111b0d]">
-                        {user.balance}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${status.wrapper}`}
-                      >
-                        <span
-                          className={`size-1.5 rounded-full ${status.dot}`}
-                        />
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-xs text-[#111b0d]">
-                        {user.lastLogin}
-                      </span>
-                      {user.lastLoginTime && (
-                        <span className="text-xs text-[#5e9a4c] block">
-                          {user.lastLoginTime}
+                      </td>
+                      <td className="p-4">
+                        <VerifiedBadge verified={user.isVerified} />
+                      </td>
+                      <td className="p-4">
+                        <span className="text-sm font-medium text-[#111b0d]">
+                          {user.balance}
                         </span>
-                      )}
-                    </td>
-                    <td className="p-4 pr-6 text-right">
-                      <button className="text-[#5e9a4c] hover:text-[#111b0d] transition-colors p-1 rounded hover:bg-gray-100">
-                        <MdMoreVert className="text-xl" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${status.wrapper}`}
+                        >
+                          <span
+                            className={`size-1.5 rounded-full ${status.dot}`}
+                          />
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="p-4">
+                        <span className="text-xs text-[#111b0d]">
+                          {user.joinedDate}
+                        </span>
+                        <span className="text-xs text-[#5e9a4c] block">
+                          {user.joinedTime}
+                        </span>
+                      </td>
+                      <td className="p-4 pr-6 text-right">
+                        <ActionMenu
+                          userId={user.id}
+                          currentStatus={user.status}
+                          onAction={handleAction}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Mobile card list */}
         <div className="md:hidden">
-          {users.map((user) => (
-            <UserCard key={user.id} user={user} />
-          ))}
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="p-4 border-b border-[#eaf3e7] animate-pulse flex gap-3"
+                >
+                  <div className="size-10 rounded-full bg-[#eaf3e7] shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-[#eaf3e7] rounded w-1/2" />
+                    <div className="h-3 bg-[#eaf3e7] rounded w-3/4" />
+                  </div>
+                </div>
+              ))
+            : filtered.map((user) => (
+                <UserCard key={user.id} user={user} onAction={handleAction} />
+              ))}
         </div>
 
         {/* Pagination */}
         <div className="flex items-center justify-between p-4 border-t border-[#d5e7cf] bg-[#f9fcf8]">
           <p className="text-sm text-[#5e9a4c]">
-            <span className="font-bold text-[#111b0d]">1–5</span>
+            <span className="font-bold text-[#111b0d]">Page {page}</span>
             <span className="hidden sm:inline">
               {" "}
-              of <span className="font-bold text-[#111b0d]">1,240</span> results
+              of <span className="font-bold text-[#111b0d]">{totalPages}</span>
             </span>
           </p>
           <div className="flex gap-2">
             <button
-              disabled
-              className="px-3 py-1.5 rounded-lg border border-[#d5e7cf] text-sm font-medium text-[#5e9a4c] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              disabled={page <= 1 || loading}
+              onClick={() => setPage((p) => p - 1)}
+              className="px-3 py-1.5 rounded-lg border border-[#d5e7cf] text-sm font-medium text-[#5e9a4c] disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-white"
             >
               Previous
             </button>
-            <button className="px-3 py-1.5 rounded-lg border border-[#d5e7cf] text-sm font-medium text-[#5e9a4c] hover:bg-white hover:text-[#46ec13] transition-colors">
+            <button
+              disabled={page >= totalPages || loading}
+              onClick={() => setPage((p) => p + 1)}
+              className="px-3 py-1.5 rounded-lg border border-[#d5e7cf] text-sm font-medium text-[#5e9a4c] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:text-[#46ec13] transition-colors"
+            >
               Next
             </button>
           </div>
