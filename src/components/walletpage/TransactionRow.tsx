@@ -6,9 +6,11 @@ type Props = {
   status: string;
   amount: string;
   positive?: boolean;
+  withdrawalID: string;
 };
 
 export default function TransactionRow({
+  withdrawalID,
   title,
   subtitle,
   date,
@@ -18,7 +20,11 @@ export default function TransactionRow({
   positive,
 }: Props) {
   return (
-    <tr className="border-b hover:bg-gray-50">
+    <tr className="border-b last:border-b-0 border-[#d5e7cf] hover:bg-gray-50">
+      <td className="p-4">
+        <span className="text-sm">{withdrawalID}</span>
+      </td>
+
       <td className="p-4">
         <p className="font-bold">{title}</p>
         <p className="text-sm text-gray-500">{subtitle}</p>
