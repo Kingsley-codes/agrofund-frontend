@@ -12,6 +12,7 @@ import { GrowIcon } from "@/components/GrowIcon";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { FiLogOut, FiChevronUp } from "react-icons/fi";
+import { MdOutlineCardTravel } from "react-icons/md";
 import axios from "axios";
 
 export interface UserData {
@@ -34,6 +35,11 @@ const navLinks = [
   { href: "/admin/dashboard/users", label: "Users", icon: FaUsers },
   { href: "/admin/dashboard/produce", label: "Produces", icon: PiPlantDuotone },
   {
+    href: "/admin/dashboard/investments",
+    label: "Investments",
+    icon: MdOutlineCardTravel,
+  },
+  {
     href: "/admin/dashboard/payments",
     label: "Payments",
     icon: TbCreditCardPay,
@@ -43,6 +49,7 @@ const navLinks = [
     label: "Withdrawals",
     icon: FaMoneyBills,
   },
+
   { href: "/admin/dashboard/chat", label: "Chat", icon: IoIosChatboxes },
 ];
 
