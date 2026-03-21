@@ -137,7 +137,6 @@ function ActionMenu({ userId, currentStatus, onAction }: ActionMenuProps) {
   const [busy, setBusy] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     function handler(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -201,10 +200,6 @@ function UserCard({
 
   return (
     <div className="flex items-start gap-3 p-4 border-b border-[#eaf3e7] last:border-0 hover:bg-[#f9fcf8] transition-colors">
-      <input
-        type="checkbox"
-        className="mt-1 rounded border-[#d5e7cf] text-[#46ec13] focus:ring-[#46ec13]/50 h-4 w-4 shrink-0"
-      />
       <Image
         src={user.avatar}
         alt={user.name}
@@ -218,7 +213,7 @@ function UserCard({
       />
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-bold text-[#111b0d] text-sm truncate">
+          <span className="font-bold text-gray-700 text-sm truncate">
             {user.name}
           </span>
           <ActionMenu
@@ -227,7 +222,9 @@ function UserCard({
             onAction={onAction}
           />
         </div>
-        <p className="text-xs text-[#5e9a4c] truncate mb-2">{user.email}</p>
+        {/* ── User ID line (NEW) ── */}
+        <p className="text-xs font-mono text-[#5e9a4c] mb-0.5">{user.userID}</p>
+        <p className="text-xs text-gray-400 truncate mb-2">{user.email}</p>
         <div className="flex flex-wrap items-center gap-2">
           <VerifiedBadge verified={user.isVerified} />
           <span
@@ -240,7 +237,7 @@ function UserCard({
             {user.balance}
           </span>
         </div>
-        <p className="text-xs text-[#5e9a4c] mt-1.5">
+        <p className="text-xs text-gray-400 mt-1.5">
           Joined:{" "}
           <span className="text-[#111b0d]">
             {user.joinedDate} · {user.joinedTime}
@@ -270,43 +267,71 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+
+  // Search / filter state — these drive the API call
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchUsers = useCallback(async (currentPage = 1) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(
-        `${BACKEND_URL}/api/admin/dashboard/users?page=${currentPage}`,
-        { credentials: "include" },
-      );
-      if (!res.ok) throw new Error(`Server responded with ${res.status}`);
-      const json = await res.json();
-      if (!json.success) throw new Error("API returned success: false");
-
-      setUsers((json.data as ApiUser[]).map(mapApiUser));
-      setPage(json.page ?? 1);
-      setTotalPages(json.pages ?? 1);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load users");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
+  // ── Debounce search input (400 ms) ────────────────────────────────────────
   useEffect(() => {
-    fetchUsers(page);
-  }, [page, fetchUsers]);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1); // reset to page 1 on new search
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Reset page when status filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [statusFilter]);
+
+  // ── Fetch (params: page + q + status) ────────────────────────────────────
+  const fetchUsers = useCallback(
+    async (currentPage: number, q: string, status: string) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const params = new URLSearchParams({ page: String(currentPage) });
+        if (q) params.set("q", q);
+        // Backend expects lowercase "active" / "suspended" — skip "All Status" and "Pending"
+        if (status === "Active") params.set("status", "active");
+        if (status === "Suspended") params.set("status", "suspended");
+
+        const res = await fetch(
+          `${BACKEND_URL}/api/admin/dashboard/users?${params.toString()}`,
+          { credentials: "include" },
+        );
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        const json = await res.json();
+        if (!json.success) throw new Error("API returned success: false");
+
+        setUsers((json.data as ApiUser[]).map(mapApiUser));
+        setPage(json.page ?? 1);
+        setTotalPages(json.pages ?? 1);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load users");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
+  // Re-fetch whenever page, debouncedSearch, or statusFilter changes
+  useEffect(() => {
+    fetchUsers(page, debouncedSearch, statusFilter);
+  }, [page, debouncedSearch, statusFilter, fetchUsers]);
 
   // ── Optimistic activate / suspend ─────────────────────────────────────────
   const handleAction = useCallback(
     async (userId: string, action: "activate" | "suspend") => {
       setActionError(null);
 
-      // Optimistic update
       const previousUsers = users;
       const newStatus: Status = action === "activate" ? "Active" : "Suspended";
       setUsers((prev) =>
@@ -331,7 +356,6 @@ export default function UsersTable() {
         const json = await res.json();
         if (!json.success) throw new Error(json.message ?? "Action failed");
       } catch (err) {
-        // Roll back on failure
         setUsers(previousUsers);
         setActionError(
           err instanceof Error
@@ -342,18 +366,6 @@ export default function UsersTable() {
     },
     [users],
   );
-
-  // Client-side search + status filter
-  const filtered = users.filter((u) => {
-    const matchSearch =
-      !search ||
-      u.name.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase()) ||
-      u.userID.toLowerCase().includes(search.toLowerCase());
-    const matchStatus =
-      statusFilter === "All Status" || u.status === statusFilter;
-    return matchSearch && matchStatus;
-  });
 
   return (
     <div>
@@ -386,7 +398,7 @@ export default function UsersTable() {
           </div>
 
           <button
-            onClick={() => fetchUsers(page)}
+            onClick={() => fetchUsers(page, debouncedSearch, statusFilter)}
             className="h-11 px-4 flex items-center gap-2 bg-white border border-[#d5e7cf] rounded-lg text-sm font-bold text-[#111b0d] hover:bg-gray-50 transition-colors shrink-0"
             title="Refresh"
           >
@@ -405,7 +417,7 @@ export default function UsersTable() {
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center justify-between">
           <span>⚠ {error}</span>
           <button
-            onClick={() => fetchUsers(page)}
+            onClick={() => fetchUsers(page, debouncedSearch, statusFilter)}
             className="underline font-semibold hover:text-red-900"
           >
             Retry
@@ -443,7 +455,7 @@ export default function UsersTable() {
                 ].map((col) => (
                   <th
                     key={col}
-                    className={`p-4 text-xs font-bold text-[#5e9a4c] uppercase tracking-wider ${
+                    className={`p-4 text-xs font-bold text-gray-500 uppercase tracking-wider ${
                       col === "Actions" ? "text-right pr-6" : ""
                     }`}
                   >
@@ -455,7 +467,7 @@ export default function UsersTable() {
             <tbody className="divide-y divide-[#eaf3e7]">
               {loading ? (
                 Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
-              ) : filtered.length === 0 ? (
+              ) : users.length === 0 ? (
                 <tr>
                   <td
                     colSpan={8}
@@ -465,7 +477,7 @@ export default function UsersTable() {
                   </td>
                 </tr>
               ) : (
-                filtered.map((user) => {
+                users.map((user) => {
                   const status = statusBadge[user.status];
                   return (
                     <tr
@@ -473,7 +485,7 @@ export default function UsersTable() {
                       className="hover:bg-[#f9fcf8] transition-colors"
                     >
                       <td className="p-4 pl-6">
-                        <span className="text-sm font-mono font-medium text-[#111b0d]">
+                        <span className="text-sm font-mono font-medium text-gray-600">
                           {user.userID}
                         </span>
                       </td>
@@ -492,10 +504,10 @@ export default function UsersTable() {
                       </td>
                       <td className="p-4">
                         <div className="flex flex-col">
-                          <span className="font-bold text-[#111b0d] text-sm">
+                          <span className="font-semibold text-gray-800 text-base">
                             {user.name}
                           </span>
-                          <span className="text-xs text-[#5e9a4c]">
+                          <span className="text-xs text-gray-400">
                             {user.email}
                           </span>
                         </div>
@@ -556,7 +568,7 @@ export default function UsersTable() {
                   </div>
                 </div>
               ))
-            : filtered.map((user) => (
+            : users.map((user) => (
                 <UserCard key={user.id} user={user} onAction={handleAction} />
               ))}
         </div>
